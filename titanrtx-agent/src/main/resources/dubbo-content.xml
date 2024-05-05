@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+			http://code.alibabatech.com/schema/dubbo
+			http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="titanrtx-agent"/>
+    <dubbo:registry protocol="zookeeper" address="${zkAddress}"/>
+    <dubbo:protocol name="dubbo" port="${dubboPort}" payload="${dubbo.payload}"/>
+    <dubbo:provider timeout="600000"/>
+
+
+    <dubbo:service interface="com.yunji.titanrtx.common.service.AgentService" ref="agentServiceImpl" version="1.0.0"/>
+    <bean id="agentServiceImpl" class="com.yunji.titanrtx.agent.service.impl.dubbo.AgentServiceImpl"/>
+
+
+    <dubbo:reference id="agentReportService" interface="com.yunji.titanrtx.common.service.AgentReportService"
+                     timeout="60000" version="1.0.0" check="false" retries="0"/>
+
+    <bean id="zookeeperService" class="com.yunji.titanrtx.common.zookeeper.CuratorService">
+        <constructor-arg value="${zkAddress}"/>
+    </bean>
+
+    <bean id="influxService" class="com.yunji.titanrxt.plugin.influxdb.InfluxService">
+        <constructor-arg index="0" value="${influxDB.url}"/>
+    </bean>
+
+</beans>

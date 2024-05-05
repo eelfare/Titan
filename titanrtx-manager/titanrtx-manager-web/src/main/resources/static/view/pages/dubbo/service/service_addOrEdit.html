@@ -1,0 +1,200 @@
+<div class="layui-elem-quote">
+    服务管理 &gt;&gt;<label class="titan-head-label">{{isEdit? '编辑服务':'新增服务'}}</label>
+</div>
+
+<div class="layui-row conForm">
+    <div class="layui-col-md10 layui-form">
+        <blockquote class="layui-elem-quote ">
+            <div class="layui-form-item">
+                <label class="layui-form-label">服务别名：</label>
+                <div class="layui-input-block">
+                    <input type="text" ng-model="serviceInfoModel.name" name="name" lay-verify="required"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-row">
+                <label class="layui-form-label">应用名称：</label>
+                <div class="layui-col-md6">
+                    <input type="text" name="applicationName" ng-model="serviceInfoModel.applicationName"
+                           lay-verify="required" class="layui-input">
+                </div>
+                <div class="layui-col-md5">
+                    <select lay-filter="applicationNameFilter" lay-search="">
+                        <option value="">从注册中心获取</option>
+                        <option ng-repeat="applicationName in applicationNamesModel" value="{{applicationName}}">
+                            {{applicationName}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-row">
+                <label class="layui-form-label">服务名称：</label>
+                <div class="layui-col-md6">
+                    <input type="text" name="serviceName" ng-model="serviceInfoModel.serviceName" lay-verify="required"
+                           class="layui-input">
+                </div>
+                <div class="layui-col-md5">
+                    <select lay-filter="serviceFilter" lay-search="">
+                        <option value="">从注册中心获取</option>
+                        <option ng-repeat="service in serviceUrlsModel" value="{{service}}">{{service}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">方法名称：</label>
+                <div class="layui-col-md6">
+                    <input type="text" name="methodName" ng-model="serviceInfoModel.methodName" lay-verify="required"
+                           class="layui-input">
+                </div>
+                <div class="layui-col-md5">
+                    <select lay-filter="methodFilter" lay-search="">
+                        <option value="">从注册中心获取</option>
+                        <option ng-repeat="method in serviceMethodsModel" value="{{method}}">{{method}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-col-md6">
+                    <!--<label class="layui-form-label ">-->服务地址( 格式ip:port,多个地址以逗号区分,如果想集群压测,这里填 N/A )：<!--</label>-->
+                </div>
+                <div class="layui-col-md3">
+                    <input type="text" name="address" ng-model="serviceInfoModel.address" lay-verify="required"
+                           class="layui-input">
+                </div>
+                <div class="layui-col-md3">
+                    <select lay-filter="addressFilter" lay-search="">
+                        <option value="">从注册中心获取</option>
+                        <option ng-repeat="address in serviceAddressModel" value="{{address}}">{{address}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">参数类型：</label>
+                <div class="layui-input-block">
+                    <input type="text" ng-model="serviceInfoModel.paramsType" name="paramsType" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">RPC参数：</label>
+                <div class="layui-input-block">
+                    <input type="text" ng-model="serviceInfoModel.rpcContent" name="rpcContent" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">参数使用：</label>
+                <div class="layui-input-block">
+                    <select name="paramMode" title="paramMode">
+                        <option value="RANDOM" ng-selected="serviceInfoModel.paramMode == 'RANDOM'">RANDOM</option>
+                        <option value="ORDER" ng-selected="serviceInfoModel.paramMode == 'ORDER'">ORDER</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="text" ng-model="serviceInfoModel.id" name="id" autocomplete="off"
+                           class="layui-input layui-hide" title="input"/>
+                </div>
+            </div>
+
+        </blockquote>
+
+        <hr class="layui-bg-green">
+
+
+        <blockquote class="layui-elem-quote ">
+            <div class="layui-form-item layui-row layui-col-space10"
+                 style="margin-bottom: 0 !important;margin-top: 10px">
+                <div class="layui-col-md4">
+                    <label class="layui-form-label speParams" ng-click="describeParamsDialog('dubbo')">参数说明：</label>
+                </div>
+                <div class="layui-col-md8" style="text-align: right">
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" ng-click="pullHttParams()">获取</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" ng-click="batchImportParams()">批导</button>
+                    <a class="layui-btn layui-btn-primary layui-btn-sm" ng-click="batchDoParamCase()">批测</a>
+                    <a class="layui-btn layui-btn-primary  layui-btn-sm"
+                       ng-click="batchDeleteParams(serviceInfoModel.id)">清空</a>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 0!important;">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="30">
+                            <col>
+                            <col width=175>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>参数</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="params in serviceParamsModel">
+                            <td>{{params.id}}</td>
+                            <td><input ng-class="params.id" type="text" ng-model="params.param" class="layui-input">
+                            </td>
+                            <td class="paramsOperation">
+                                <a class="layui-btn layui-btn-sm" ng-click="updateHttpParam(params.id)">保存</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-warm"
+                                   ng-click="doPreParamCase(params.id)">测试</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-danger"
+                                   ng-click="deleteParam(params.id)">删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <input type="text" ng-model="inputParamModel" class="layui-input">
+                            </td>
+                            <td class="paramsOperation">
+                                <a class="layui-btn layui-btn-sm " ng-click="insertServiceParam()">保存</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-warm" ng-click="doInputParamCase()">测试</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-danger" ng-click="clearInputParam()">删除</a>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    <div class="layui-row" id="paramsModelPage"></div>
+                </div>
+            </div>
+            <div class="layui-form-item" style="text-align: right">
+                <a class="layui-btn titan-btn layui-btn-normal layui-btn-sm" id="serviceSubmit" lay-submit
+                   lay-filter="serviceSubmit">保存</a>
+                <a class="layui-btn layui-btn-primary layui-btn-sm" ng-click="goRoutePage('/service',{})">取消</a>
+            </div>
+
+        </blockquote>
+    </div>
+</div>
+
+
+<div id="batchImportParamsDialog" style="display: none">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-carousel">
+                <blockquote class="layui-elem-quote">
+                    <div class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input ng-model="batchImportModel.template" placeholder="请填入模板,若无,则不填"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <div class="layui-input-block" style="margin-left: 0 !important;">
+                                <textarea ng-model="batchImportModel.inputData" placeholder="请导入内容"
+                                          class="layui-textarea" style="height: 445px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>

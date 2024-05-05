@@ -1,0 +1,71 @@
+<div class="layui-row searchInputBackGroundWhite">
+    <div class="layui-col-md3">
+        <li class="layui-this customSearch">
+            <input type="text" ng-keyup="enterEvent($event,this)" class="layui-input" ng-model="searchModel"
+                   placeholder="用户名">
+        </li>
+    </div>
+    <div class="layui-col-md8">&nbsp;</div>
+
+    <div class="layui-col-md1">
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 0">
+                <a class="layui-btn layui-btn-primary searchButton" ng-href="#/userAdd">
+                    <i class="layui-icon layui-icon-add-circle"></i> 新增用户
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="layui-row">
+    <table class="layui-table tableCursor" lay-skin="line">
+        <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col width=40>
+            <col width=1>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>工号</th>
+            <th>用户名</th>
+            <th>手机号</th>
+            <th>登陆次数</th>
+            <th>状态</th>
+            <th>登陆时间</th>
+            <th>操作</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in showModel">
+            <td>{{$index+ 1}}</td>
+            <td>{{user.userName}}</td>
+            <td>{{user.nickName}}</td>
+            <td>{{user.phone }}</td>
+            <td>{{user.loginTimes}}</td>
+            <td>{{user.deleted == 1 ?'禁用':'正常' }}</td>
+            <td>{{user.updateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>
+                <a class="layui-btn layui-btn-xs" ng-click="goRoutePage('/userEdit',{'id':user.id})">编辑</a>
+            </td>
+            <td>
+                <a class="layui-btn layui-btn-xs"
+                   ng-class="user.deleted == 1 ? 'layui-btn-normal':'layui-btn-danger' "
+                   ng-click="user.deleted == 1 ?  userEnable(user.id) : userDisable(user.id)">
+                    {{user.deleted == 1?'启用':'禁用' }}</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="layui-row" id="indexModelPage"></div>
+</div>
+
+

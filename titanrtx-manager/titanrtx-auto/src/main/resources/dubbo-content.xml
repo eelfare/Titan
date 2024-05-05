@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="titanrtx-auto"/>
+    <dubbo:registry protocol="zookeeper" address="${zkAddress}"/>
+    <dubbo:protocol name="dubbo" port="${dubboPort}"/>
+
+    <!--依赖服务-->
+    <!--    <dubbo:reference id="sceneOperatingCenterService" interface="com.yunji.titanrtx.manager.service.SceneOperatingCenterService" check="false" version="1.0.0" retries="10"/>-->
+    <dubbo:reference id="sceneOperatingCenterService"
+                     interface="com.yunji.titanrtx.manager.service.SceneOperatingCenterService" check="false"
+                     version="1.0.0" retries="0"/>
+
+    <dubbo:reference id="batchCenterService" interface="com.yunji.titanrtx.manager.service.BatchCenterService"
+                     check="false" version="1.0.0" retries="0"/>
+
+
+    <!--依赖服务-->
+    <dubbo:reference id="commanderService" interface="com.yunji.titanrtx.common.service.CommanderService" check="false"
+                     version="1.0.0" retries="0"/>
+
+
+    <bean id="zookeeperService" class="com.yunji.titanrtx.common.zookeeper.CuratorService">
+        <constructor-arg value="${zkAddress}"/>
+    </bean>
+
+</beans>

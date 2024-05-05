@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.data.TaskBatchMapper">
+    <select id="selectAll" resultType="com.yunji.titanrtx.manager.dao.entity.data.BatchEntity">
+      SELECT * FROM batch  order by updateTime desc limit 200
+    </select>
+
+    <select id="usedTargetTask" resultType="java.lang.Integer">
+      SELECT count(*) FROM batch  where target = #{target}
+    </select>
+
+    <delete id="deleteById">
+        delete from batch where id = #{id}
+    </delete>
+
+
+    <insert id="insert">
+        insert into batch (name,target,dataTotal,status,tasks, doTime)
+        values (#{name},#{target},#{dataTotal},#{status},#{tasks},#{doTime})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.data.BatchEntity">
+        SELECT * from batch where id = #{id}
+    </select>
+
+    <update id="update">
+        update batch set   batch.name =#{name},
+                               batch.target = #{target},
+                               batch.dataTotal = #{dataTotal},
+                               batch.status =#{status},
+                               batch.tasks =#{tasks},
+                               batch.doTime=#{doTime},
+                               batch.updateTime = now()
+        where batch.id = #{id}
+    </update>
+
+    <update id="updateDataTotal">
+        update batch set   batch.name =#{name},
+                               batch.target = #{target},
+                               batch.dataTotal = #{dataTotal},
+                               batch.status =#{status},
+                               batch.tasks =#{tasks},
+                               batch.doTime=#{doTime}
+        where batch.id = #{id}
+    </update>
+
+    <select id="searchBatchs" resultType="com.yunji.titanrtx.manager.dao.entity.data.BatchEntity">
+        select * from batch where batch.name like CONCAT('%',#{key},'%')  order by batch.updateTime desc
+    </select>
+</mapper>

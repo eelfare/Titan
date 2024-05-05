@@ -1,0 +1,113 @@
+<blockquote class="layui-elem-quote layui-text">
+    为方便日常TOP300压测，目前在此处增加开关，TIPS：1. <span style="color: #01AAED">TOP300自动获取时间为周二和周四下午15:00，开关务必在此时间之前打开！</span>
+    2. <span style="color: #01AAED">TOP300将会以13:00为结束时间，向前推移24小时来获取TOP300数据，即前一天的13:00到今天的13：00！</span>
+</blockquote>
+<div class="layui-form-item layui-form">
+    <label class="layui-form-label">TOP压测：</label>
+    <div class="layui-input-block">
+        <switch-plus yj-switch-model="top300Switch"
+                     lay-filter="top300Switch" lay-text="ON|OFF" name="top300Switch">
+    </div>
+</div>
+<hr class="layui-bg-green">
+<div class="layui-form layui-row layui-col-space3 searchInputBackGroundWhite">
+    <div class="layui-form layui-row layui-col-space3 searchInputBackGroundWhite">
+        <div class="layui-col-md1">
+            <div class="layui-form-item layui-input layui-text"
+                 style="display:flex;align-items: center">
+                有效链路数：{{availabilityLength}}
+            </div>
+        </div>
+
+        <div class="layui-col-md10">&nbsp;</div>
+        <div class="layui-col-md1">
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 0">
+                    <button class="layui-btn layui-btn-primary searchButton" ng-click="confirmAutoTopLink()">确认链路
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-row">
+    <table class="layui-table layui-form tableCursor" lay-skin="line">
+        <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col width=60>
+            <col width="1">
+            <col width="1">
+            <col width="1">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>
+                <input type="checkbox" lay-skin="primary" lay-filter="allTopChoose"/>
+            </th>
+            <th>序号</th>
+            <th>域名</th>
+            <th>路径</th>
+            <th>请求次数</th>
+            <th>成功次数</th>
+            <th>操作</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="topLink in showModel" ng-style="{'background':topLink.blnBlack?'#FBFBFB':''}" on-finish-render>
+            <td ng-if="topLink.blnBlack">
+                <input type="checkbox" name="singleTopId" disabled lay-skin="primary"
+                       value="{{topLink.domain+topLink.path}}"
+                />
+            </td>
+            <td ng-if="!topLink.blnBlack">
+                <input type="checkbox" name="singleTopId" lay-skin="primary"
+                       value="{{topLink.domain+topLink.path + ','+topLink.requestTimes}}"
+                       lay-filter="singleTopChoose"/>
+            </td>
+            <td ng-style="{'color':topLink.blnBlack?'#bcbec2':''}">{{$index+1}}</td>
+            <td ng-style="{'color':topLink.blnBlack?'#bcbec2':''}">{{topLink.domain}}</td>
+            <td ng-style="{'color':topLink.blnBlack?'#bcbec2':topLink.blnWhite?'':'red'}">{{topLink.path}}</td>
+            <td ng-style="{'color':topLink.blnBlack?'#bcbec2':''}">{{topLink.requestTimes}}</td>
+            <td ng-style="{'color':topLink.blnBlack?'#bcbec2':''}">{{topLink.successTimes}}</td>
+            <td ng-if="topLink.blnBlack || topLink.blnWhite">
+                <a class="layui-btn layui-btn-xs layui-btn-disabled">加黑</a>
+            </td>
+            <td ng-if="topLink.blnBlack || topLink.blnWhite">
+                <a class="layui-btn layui-btn-xs layui-btn-disabled">加白</a>
+            </td>
+            <td ng-if="!topLink.blnBlack && !topLink.blnWhite">
+                <a class="layui-btn layui-btn-xs" ng-click="autoTopLinkAddBlack(topLink.domain,topLink.path)">加黑</a>
+            </td>
+            <td ng-if="!topLink.blnBlack && !topLink.blnWhite">
+                <a class="layui-btn layui-btn-xs layui-btn-warm"
+                   ng-click="autoTopLinkAddWhite(topLink.domain,topLink.path)">加白</a>
+            </td>
+            <td ng-if="topLink.filter">
+                <a class="layui-btn-disabled">删除</a>
+            </td>
+            <td ng-if="!topLink.filter">
+                <a class="layui-btn layui-btn-xs layui-btn-danger"
+                   ng-click="autoTopLinkRemove(topLink.domain,topLink.path)">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="layui-row" id="indexModelPage"></div>
+</div>
+
+
+<div id="inputSceneNameDialog" style="display: none">
+    <blockquote class="layui-elem-quote layui-form" style="background-color: white;margin-top: 20px">
+        <div class="layui-row">
+            <input type="text" ng-model="inputSceneNameModel" placeholder="请输入场景名称" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </blockquote>
+</div>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.system.UserMapper">
+
+
+    <insert id="insert">
+        insert into user (userName,nickName,phone,passWord,pathIds)
+        values (#{userName},#{nickName},#{phone},#{passWord},#{pathIds})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+
+    <select id="findByPhone" resultType="com.yunji.titanrtx.manager.dao.entity.system.UserEntity">
+        SELECT * FROM user u where u.phone = #{phone}
+    </select>
+
+    <select id="selectAll" resultType="com.yunji.titanrtx.manager.dao.entity.system.UserEntity">
+        select * from user u where u.id != 1 order by u.updateTime desc limit 200
+    </select>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.system.UserEntity">
+        SELECT * FROM user u where u.id = #{id}
+    </select>
+
+
+    <update id="updateUserPW">
+        update user u set u.passWord =#{newPw}, u.passWord = now() where u.id = #{id}
+    </update>
+
+    <update id="update">
+        update user
+        <set>
+            userName =#{userName},
+            <if test="nickName != null">
+                nickName =#{nickName},
+            </if>
+            phone =#{phone},
+            passWord =#{passWord},
+            pathIds =#{pathIds},
+
+            <if test="loginTimes != 0">
+                loginTimes =#{loginTimes},
+            </if>
+            updateTime = now()
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <update id="increaseLogTimes">
+        update user u set     u.loginTimes =#{loginTimes} + 1,
+                                u.updateTime = now()
+        where u.id = #{id}
+    </update>
+
+    <update id="disable">
+        update user u set   u.deleted = 1,
+                              u.updateTime = now()
+        where u.id = #{id}
+    </update>
+    <update id="enable">
+        update user u set   u.deleted = 0,
+                            u.updateTime = now()
+        where u.id = #{id}
+    </update>
+
+
+</mapper>
+

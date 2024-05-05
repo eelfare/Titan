@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.auto.BlackGroupMapper">
+
+    <select id="selectAll" resultType="com.yunji.titanrtx.manager.dao.entity.auto.BlackGroupEntity">
+      SELECT * FROM group_blacklist s  order by s.updateTime desc limit 200
+    </select>
+
+
+    <delete id="deleteById">
+        delete from group_blacklist where id = #{id}
+    </delete>
+
+
+    <insert id="insert">
+        insert into group_blacklist (name)
+        values (#{name})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.auto.BlackGroupEntity">
+        SELECT * FROM group_blacklist s where s.id = #{id}
+    </select>
+
+
+    <select id="findByName" resultType="java.lang.Boolean">
+       <![CDATA[
+         select count(id)
+                from group_blacklist where name = #{name, jdbcType=VARCHAR}
+        ]]>
+    </select>
+
+    <update id="update">
+        update group_blacklist s set
+                             s.name =#{name},
+                             s.updateTime = now()
+        where s.id = #{id}
+    </update>
+
+
+    <select id="search" resultType="com.yunji.titanrtx.manager.dao.entity.auto.BlackGroupEntity">
+        select * from group_blacklist s where s.name like CONCAT('%',#{key},'%') or s.id = #{key}  order by s.updateTime desc
+    </select>
+</mapper>
+

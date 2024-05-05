@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.http.LinkParamsMapper">
+    <select id="selectAllIdByLinkId" resultType="integer">
+        SELECT lp.id FROM link_params lp where lp.linkId = #{linkId} and lp.deleted = 0 order by lp.updateTime desc
+    </select>
+
+    <select id="selectParamRandom" resultType="string">
+        SELECT lp.param FROM link_params lp where lp.linkId = #{linkId} and lp.deleted = 0 ORDER BY RAND() LIMIT 1
+    </select>
+
+    <delete id="deleteById">
+        delete from link_params where id = #{id}
+    </delete>
+
+    <delete id="deleteAllByLinkId">
+        delete from link_params where linkId = #{linkId}
+    </delete>
+
+    <insert id="insert">
+        insert into link_params (linkId,param)
+        values (#{linkId},#{param})
+    </insert>
+
+    <insert id="batchInsertList">
+        insert into link_params (linkId,param)
+        values
+        <foreach item="item" index="index" collection="paramsEntities" separator=",">
+            (#{item.linkId},#{item.param})
+        </foreach>
+    </insert>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.http.LinkParamsEntity">
+        SELECT * FROM link_params lp where lp.id = #{id}
+    </select>
+
+
+    <select id="selectByLinkId" resultType="com.yunji.titanrtx.manager.dao.entity.http.LinkParamsEntity">
+        SELECT * FROM link_params lp where lp.linkId = #{linkId} order by lp.updateTime desc
+    </select>
+
+    <!--    2020.08.28-->
+    <select id="selectLinkIdsOfParam" resultType="int">
+        select linkId  from link_params group by linkId;
+    </select>
+
+
+    <update id="update">
+        update link_params lp set lp.param =#{param},lp.updateTime = now() where lp.id = #{id}
+    </update>
+
+    <select id="findTotalRecordsByLinkId" resultType="int">
+        SELECT count(*) FROM link_params WHERE linkId =#{linkId}
+    </select>
+
+    <select id="findMaxIdByLinkId" resultType="Integer">
+        SELECT max(id) FROM link_params WHERE linkId =#{linkId}
+    </select>
+
+    <select id="findOrdersById" resultType="int">
+        SELECT orders FROM link_params WHERE id =#{id}
+    </select>
+
+    <select id="selectParamsByRange" resultType="java.lang.String">
+        SELECT lp.param FROM link_params lp
+        WHERE
+            lp.linkId = #{linkId}
+         AND
+            lp.orders between #{start} and #{end}
+    </select>
+
+
+</mapper>
+

@@ -1,0 +1,222 @@
+<div class="layui-row">
+    <div class="layui-elem-quote">
+        <label class="titan-head-label">场景指标</label>
+    </div>
+    <div style="position:absolute;height:105px;width:80px;right:90px;top:-5px;text-align:center;line-height: 80px;"
+         class="titan-div-seal">
+        <img style="height:105px;" ondragstart="return false;"
+             ng-src="{{reportDetailModel.sceneEntity.throughPut < reportDetailModel.sum.qps ? '../../../images/well.png':'../../../images/bad.png'}}"/>
+    </div>
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+            <th>策略</th>
+            <th>并发数</th>
+            <th>总请求数</th>
+            <th>发起请求次数</th>
+            <th>平均耗时(ms)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{reportDetailModel.sceneEntity.strategy | converStrategy}}</td>
+            <td>{{reportDetailModel.sceneEntity.concurrent}}</td>
+            <td>{{reportDetailModel.sceneEntity.total}}</td>
+            <td>{{reportDetailModel.sum.requestTotal}}</td>
+            <td>{{reportDetailModel.sum.averageDuration}}</td>
+        </tr>
+        </tbody>
+        <thead>
+        <tr>
+            <th>请求成功数</th>
+            <th>请求成功率</th>
+            <th>业务成功数</th>
+            <th>业务成功率</th>
+            <th>开始时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{reportDetailModel.sum.requestSuccessCode}}</td>
+            <td>{{reportDetailModel.sum.requestSuccessCodeRate}}</td>
+            <td>{{reportDetailModel.sum.businessSuccessCode}}</td>
+            <td>{{reportDetailModel.sum.businessSuccessCodeRate}}</td>
+            <td>{{reportDetailModel.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+        </tr>
+        </tbody>
+        <thead>
+        <tr>
+            <th>期待QPS</th>
+            <th>压测QPS</th>
+            <th>持续时间(ms)</th>
+            <th>请求耗时(ms)</th>
+            <th>结束时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{reportDetailModel.sceneEntity.throughPut}}</td>
+            <td>{{reportDetailModel.sum.qps}}</td>
+            <td>{{reportDetailModel.sum.executionDuration}}</td>
+            <td>{{reportDetailModel.sum.totalDuration}}</td>
+            <td>{{reportDetailModel.endTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<hr class="layui-bg-blue">
+<div class="layui-row">
+    <div class="layui-elem-quote">
+        <label class="titan-head-label">系统指标</label>
+    </div>
+
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>RT/基线</th>
+            <th>TPS(m)/基线</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="bo in reportDetailModel.bos">
+            <td ng-click="showLinkDialog(bo.id)" style="cursor: pointer">{{bo.id}}</td>
+            <td ng-if="reportDetailModel.sum.baseLineBos[$index].avgRt != 0">
+                <span ng-if="(reportDetailModel.sum.baseLineBos[$index].avgRt+reportDetailModel.rtError) > bo.avgRt"
+                      style="color: green;font-weight: bold;font-size: 20px">{{bo.avgRt}}</span>
+                <span ng-if="(reportDetailModel.sum.baseLineBos[$index].avgRt+reportDetailModel.rtError)<= bo.avgRt"
+                      style="color: red;font-weight: bold;font-size: 20px">{{bo.avgRt}}</span>
+                <span style="font-size: 8px">/{{reportDetailModel.sum.baseLineBos[$index].avgRt == 0?"无":reportDetailModel.sum.baseLineBos[$index].avgRt}}</span>
+            </td>
+            <td ng-if="reportDetailModel.sum.baseLineBos[$index].avgRt == 0">
+                <span style="font-size: 8px">{{bo.avgRt}}/无</span>
+            </td>
+            <td ng-if="reportDetailModel.sum.baseLineBos[$index].avgDisposeCount != 0">
+                <span ng-if="reportDetailModel.sum.baseLineBos[$index].avgDisposeCount-reportDetailModel.tpsError >= bo.avgDisposeCount"
+                      style="color: red;font-weight: bold;font-size: 20px">{{bo.avgDisposeCount}}</span>
+                <span ng-if="reportDetailModel.sum.baseLineBos[$index].avgDisposeCount-reportDetailModel.tpsError < bo.avgDisposeCount"
+                      style="color: green;font-weight: bold;font-size: 20px">{{bo.avgDisposeCount}}</span>
+                <span style="font-size: 8px">/{{reportDetailModel.sum.baseLineBos[$index].avgDisposeCount == 0?"无":reportDetailModel.sum.baseLineBos[$index].avgDisposeCount}}</span>
+            </td>
+            <td ng-if="reportDetailModel.sum.baseLineBos[$index].avgDisposeCount == 0">
+                <span style="font-size: 8px">{{bo.avgDisposeCount}}/无</span>
+            </td>
+            <td>
+                <a class="layui-btn layui-btn-xs layui-btn-normal" ng-click="setBaseLine(bo)">设为基线</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<hr class="layui-bg-orange">
+<div class="layui-row">
+    <div class="layui-elem-quote">
+        <label class="titan-head-label">链路指标</label>
+    </div>
+
+    <div class="layui-elem-quote">
+        <label class="titan-head-label">响应码说明(-1:返回结果JSON不含errorCode,code或其值为-1. 1000: 返回结果不是json或请求出现异常.
+            其他code：取的值为业务json返回的code或errorCode值)</label>
+    </div>
+
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>请求耗时(ms)</th>
+            <th>平均耗时(ms)</th>
+            <th>请求次数</th>
+            <th>QPS</th>
+            <th>请求成功率</th>
+            <th>响应码列表</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="bo in reportDetailModel.sum.bos">
+            <td ng-click="showLinkDialog(bo.id)" style="cursor: pointer">{{bo.id}}</td>
+            <td>{{bo.duration}}</td>
+            <td>{{bo.averageDuration}}</td>
+            <td>{{bo.requestTotal}}</td>
+            <td>{{bo.qps}}</td>
+            <td>{{bo.requestSuccessCodeRate}}</td>
+            <td>
+                <table class="layui-table" lay-skin="line">
+                    <thead>
+                    <tr>
+                        <th>响应码</th>
+                        <th>次数</th>
+                        <th>比例</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="pairBo in bo.pairBos">
+                        <td>{{pairBo.code}}</td>
+                        <td>{{pairBo.times}}</td>
+                        <td>{{pairBo.codeRate}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<hr class="layui-bg-green">
+<div class="layui-row">
+    <div class="layui-elem-quote">
+        <label class="titan-head-label">链路快照</label>
+    </div>
+
+    <table class="layui-table" lay-skin="line">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>链路名</th>
+            <th>URL</th>
+            <th>方法</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="bullet in reportDetailModel.bulletEntity">
+            <td>{{bullet.id}}</td>
+            <td>{{bullet.name}}</td>
+            <td>{{bullet.protocol +"://"+bullet.url}}</td>
+            <td>{{bullet.method}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div id="linkDialog" style="display: none">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-carousel">
+                <div class="layui-row">
+                    <table class="layui-table" lay-skin="line">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>链路名</th>
+                            <th>URL</th>
+                            <th>方法</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{showLinkModel.id}}</td>
+                            <td>{{showLinkModel.name}}</td>
+                            <td>{{showLinkModel.protocol +"://"+showLinkModel.url}}</td>
+                            <td>{{showLinkModel.method}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

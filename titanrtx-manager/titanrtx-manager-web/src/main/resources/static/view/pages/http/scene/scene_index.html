@@ -1,0 +1,196 @@
+<div class="layui-row layui-col-space3 searchInputBackGroundWhite">
+    <div class="layui-col-md3">
+        <li class="layui-this customSearch">
+            <input type="text" ng-keyup="enterEvent($event,this)" class="layui-input" ng-model="searchModel"
+                   placeholder="场景名|链路ID">
+        </li>
+    </div>
+    <div class="layui-col-md7">&nbsp;</div>
+    <div class="layui-col-md1">
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 0">
+                <a class="layui-btn layui-btn-primary searchButton" ng-href="#/httpSceneAddOrEdit">
+                    <i class="layui-icon layui-icon-add-circle"></i> 新增场景
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md1">
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 0">
+                <a class="layui-btn layui-btn-primary searchButton" ng-click="concurrentConfig()">
+                    <i class="layui-icon layui-icon-set-sm"></i> 并发配置
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row">
+    <table class="layui-table tableCursor" lay-skin="line">
+        <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col width=60>
+            <col width="1">
+            <col width="1">
+            <col width="1">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>场景</th>
+            <th>策略</th>
+            <th>每秒并发</th>
+            <th>总请求量</th>
+            <th>期待QPS</th>
+            <th>链路ID</th>
+            <th>时间</th>
+            <th>状态</th>
+            <th>操作</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="httpSceneEntity in showModel">
+            <td>{{httpSceneEntity.id}}</td>
+            <td>{{httpSceneEntity.name}}</td>
+            <td>{{httpSceneEntity.strategy | converStrategy}}</td>
+            <td>{{httpSceneEntity.concurrent}}</td>
+            <td>{{httpSceneEntity.total}}</td>
+            <td>{{httpSceneEntity.throughPut}}</td>
+            <td ng-click="showSceneLinkDialog(httpSceneEntity.allot,httpSceneEntity.idsScale,httpSceneEntity.idsWeight,httpSceneEntity.idsQps)"
+                style="cursor: pointer">{{httpSceneEntity.idsWeight | parseIds}}
+            </td>
+            <td>{{httpSceneEntity.updateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td><i style="font-size:20px;cursor: pointer" class="layui-icon "
+                   ng-click="progressDialog(httpSceneEntity.id,'HTTP')"
+                   ng-class="httpSceneEntity.status != 0 ? 'iconColor layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop':'layui-icon-play'"></i>
+            </td>
+            <td>
+                <a class="layui-btn layui-btn-xs "
+                   ng-class="httpSceneEntity.status ===0 ? 'layui-btn-normal': 'layui-btn-warm'"
+                   ng-click="httpSceneEntity.status === 0 ? sceneStart(httpSceneEntity.id,$index) : sceneStop(httpSceneEntity.id)">{{httpSceneEntity.status
+                    ===0 ? '压测': '停止'}}</a>
+            </td>
+            <td>
+                <a class="layui-btn layui-btn-xs"
+                   ng-click="addDispatch(httpSceneEntity)">调度</a>
+            </td>
+            <td>
+                <a class="layui-btn layui-btn-xs"
+                   ng-click="goRoutePage('/httpSceneAddOrEdit',{'id':httpSceneEntity.id})">编辑</a>
+            </td>
+            <td>
+                <a class="layui-btn layui-btn-xs layui-btn-danger"
+                   ng-click="delete(httpSceneEntity.id,'httpSceneDelete')">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="layui-row" id="indexModelPage"></div>
+</div>
+
+
+<div id="sceneLinkDialog" style="display: none">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-carousel">
+                <div class="layui-row">
+                    <div class="layui-elem-quote">
+                        <label class="titan-head-label">链路详情</label>
+                    </div>
+                    <table class="layui-table" lay-skin="line">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>链路名</th>
+                            <th>URL</th>
+                            <th>方法</th>
+                            <th ng-if="selectScaleAllot !='QPS'">权重</th>
+                            <th ng-if="selectScaleAllot =='QPS'">QPS</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="link in showSceneLinkModel">
+                            <td>{{link.id}}</td>
+                            <td>{{link.name}}</td>
+                            <td>{{link.protocol +"://"+link.url}}</td>
+                            <td>{{link.method}}</td>
+                            <th ng-if="selectScaleAllot !='QPS'">{{link.weight}}</th>
+                            <th ng-if="selectScaleAllot =='QPS'">{{link.qps}}</th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="addDispatchDialog" style="display: none">
+    <blockquote class="layui-elem-quote layui-form" style="background-color: white;">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="padding: 9px 0px">粒度选择：</label>
+                <div class="layui-input-inline">
+                    <select-plus list-model="gradingListModel" lay-filter="{{httpSceneEntity.name+ $index}}"
+                                 yj-model="selectedGrading"></select-plus>
+                </div>
+            </div>
+            <div ng-if="selectedGrading.id == 'PRECISE'" class="layui-form-item" style="margin-top: 15px;">
+                <label class="layui-form-label" style="padding: 9px 0px">调度时间：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="executeTimePrecise" placeholder="yyyy-MM-dd HH:mm:ss">
+                </div>
+            </div>
+            <div ng-if="selectedGrading.id == 'EVERYDAY'" class="layui-form-item" style="margin-top: 15px;">
+                <label class="layui-form-label" style="padding: 9px 0px">调度时间：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="executeTimeEveryday" placeholder="HH点mm分">
+                </div>
+            </div>
+            <div ng-if="selectedGrading.id == 'EVERYHOUR'" class="layui-form-item" style="margin-top: 15px;">
+                <label class="layui-form-label" style="padding: 9px 0px">调度时间：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="executeTimeEveryHour" placeholder="mm分">
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-top: 15px;">
+                <label class="layui-form-label" style="padding: 9px 0px">持续时间：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" ng-model="continuousTime" id="continuousTime"
+                           placeholder="以分钟为单位，eg: 10">
+                </div>
+            </div>
+
+        </form>
+
+    </blockquote>
+</div>
+
+<div id="concurrentConfigDialog" style="display: none">
+    <blockquote class="layui-elem-quote layui-form" style="background-color: white;">
+        <legend>当前并发：{{concurrentConfigModel}}</legend>
+        <hr class="layui-bg-red marginTopBottom15">
+        <legend>修改并发：{{concurrentInputModel}}</legend>
+        <hr class="layui-bg-orange marginTopBottom15">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="number" ng-model="concurrentInputModel" class="layui-input">
+                </div>
+            </div>
+        </form>
+
+    </blockquote>
+</div>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.agent.mapper.ServiceParamsMapper">
+    <select id="selectParamsBatch" resultType="java.lang.String" parameterType="list">
+        SELECT lp.param FROM service_params lp where lp.id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item,jdbcType=NUMERIC}
+        </foreach>
+    </select>
+
+    <select id="selectParamRandom" resultType="string">
+        SELECT lp.param FROM service_params lp where lp.serviceId = #{serviceId}  ORDER BY RAND() LIMIT 1
+    </select>
+
+
+    <select id="selectParamsByRange" resultType="java.lang.String">
+        SELECT lp.param FROM service_params lp
+        WHERE
+            lp.serviceId = #{serviceId}
+         AND
+            lp.orders between #{start} and #{end}
+    </select>
+
+    <select id="selectParamsByLinkId" resultType="java.lang.String">
+        SELECT lp.param FROM service_params lp
+        WHERE
+            lp.serviceId = #{serviceId}
+        LIMIT 5000
+    </select>
+
+</mapper>
+

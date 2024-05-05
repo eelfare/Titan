@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.data.TaskMapper">
+    <select id="selectAll" resultType="com.yunji.titanrtx.manager.dao.entity.data.TaskEntity">
+      SELECT * FROM task s order by s.updateTime desc limit 200
+    </select>
+
+    <delete id="deleteById">
+        delete from task where task.id = #{id}
+    </delete>
+
+
+    <insert id="insert">
+        insert into task (name,tableName,doMode,url,method,contentType,isTarget,paramMode,template,status)
+        values
+        (#{name},#{tableName},#{doMode},#{url},#{method},#{contentType},#{isTarget},#{paramMode},#{template},#{status})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.data.TaskEntity">
+        SELECT * from task where task.id = #{id}
+    </select>
+
+    <select id="findByUrl" resultType="com.yunji.titanrtx.manager.dao.entity.data.TaskEntity">
+        SELECT * from task where task.url = #{url}
+    </select>
+
+    <update id="update">
+        update task set   task.name =#{name},
+                               task.tableName = #{tableName},
+                               task.doMode = #{doMode},
+                               task.url =#{url},
+                               task.method =#{method},
+                               task.contentType =#{contentType},
+                               task.isTarget =#{isTarget},
+                               task.paramMode =#{paramMode},
+                               task.template =#{template},
+                               task.status = #{status},
+                               task.updateTime = now()
+        where task.id = #{id}
+    </update>
+
+    <select id="searchTasks" resultType="com.yunji.titanrtx.manager.dao.entity.data.TaskEntity">
+        select * from task where task.name like CONCAT('%',#{key},'%') or task.url like CONCAT('%',#{key},'%')  order by task.updateTime desc
+    </select>
+</mapper>

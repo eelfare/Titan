@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.data.TaskOutputDeployMapper">
+
+    <select id="selectById" resultType="com.yunji.titanrtx.manager.dao.entity.data.TaskOutputDeployEntity">
+        select * from task_output_deploy tpd where tpd.id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from task_output_deploy where id = #{id}
+    </delete>
+
+    <delete id="deleteAllByTaskId">
+        delete from task_output_deploy where taskId = #{taskId}
+    </delete>
+
+
+    <delete id="deleteByTaskIdAndExpr">
+        delete from task_output_deploy where taskId = #{taskId} and expr = #{expr}
+    </delete>
+
+    <insert id="insert">
+        insert into task_output_deploy (taskId,name,expr,source, type)
+        values (#{taskId},#{name}, #{expr},#{source},#{type})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+
+    <select id="selectByTaskId" resultType="com.yunji.titanrtx.manager.dao.entity.data.TaskOutputDeployEntity">
+        SELECT * FROM task_output_deploy tpd where tpd.taskId = #{taskId} order by tpd.createTime asc
+    </select>
+
+
+    <update id="update">
+        update task_output_deploy tpd set tpd.name =#{name},tpd.expr =#{expr},tpd.source =#{source},tpd.type =#{type},tpd.updateTime = now() where tpd.id = #{id}
+    </update>
+</mapper>
+

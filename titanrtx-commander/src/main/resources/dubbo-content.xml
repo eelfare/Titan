@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+			http://code.alibabatech.com/schema/dubbo
+			http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+    <dubbo:application name="titanrtx-commander"/>
+    <dubbo:registry protocol="zookeeper" address="${zkAddress}"/>
+    <dubbo:protocol name="dubbo" port="${dubboPort}" payload="${dubbo.payload}"/>
+    <dubbo:provider timeout="600000"/>
+
+    <dubbo:service interface="com.yunji.titanrtx.common.service.CommanderService" ref="commanderServiceImpl"
+                   version="1.0.0"/>
+    <bean id="commanderServiceImpl" class="com.yunji.titanrtx.commander.service.impl.dubbo.CommanderServiceImpl"/>
+
+
+    <dubbo:service interface="com.yunji.titanrtx.common.service.AgentReportService" ref="agentReportedServiceImpl"
+                   version="1.0.0" timeout="60000"/>
+    <bean id="agentReportedServiceImpl" class="com.yunji.titanrtx.commander.service.impl.dubbo.AgentReportServiceImpl"/>
+
+    <!-- screenshot service-->
+    <dubbo:service interface="com.yunji.titanrtx.common.service.ScreenshotService"
+                   ref="screenshotServiceImpl" version="1.0.0" timeout="30000"/>
+
+
+    <dubbo:reference id="agentService" interface="com.yunji.titanrtx.common.service.AgentService" version="1.0.0"
+                     check="false" retries="0">
+        <dubbo:method name="start" async="true"/>
+        <dubbo:method name="stop" async="true"/>
+        <dubbo:method name="restart" async="true"/>
+    </dubbo:reference>
+
+    <dubbo:reference id="commanderReportService" interface="com.yunji.titanrtx.common.service.CommanderReportService"
+                     version="1.0.0" check="false" retries="0" timeout="60000"/>
+
+    <bean id="zookeeperService" class="com.yunji.titanrtx.common.zookeeper.CuratorService">
+        <constructor-arg value="${zkAddress}"/>
+    </bean>
+
+</beans>

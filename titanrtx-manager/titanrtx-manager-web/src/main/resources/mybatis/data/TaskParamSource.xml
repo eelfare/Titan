@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.data.TaskParamSourceMapper">
+
+    <delete id="deleteById">
+        delete from task_param_source where id = #{id}
+    </delete>
+
+    <delete id="deleteByBatchId">
+        delete from task_param_source where batchId = #{batchId}
+    </delete>
+
+    <delete id="deleteByBatchIdAndTaskId">
+        delete from task_param_source where batchId = #{batchId} and taskId = #{taskId}
+    </delete>
+
+    <insert id="insert">
+        insert into task_param_source (batchId,taskId,paramsSource)
+        values (#{batchId},#{taskId}, #{paramsSource})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+
+    <select id="findByBatchId" resultType="com.yunji.titanrtx.manager.dao.entity.data.TaskParamSourceEntity">
+        SELECT * FROM task_param_source tps where batchId = #{batchId} order by createTime asc
+    </select>
+
+    <select id="findByBatchIdAndTaskId" resultType="com.yunji.titanrtx.manager.dao.entity.data.TaskParamSourceEntity">
+        SELECT * FROM task_param_source tps where batchId = #{batchId} and taskId = #{taskId} order by createTime asc
+    </select>
+
+
+    <update id="update">
+        update task_param_source tps set tps.taskId =#{taskId},tps.paramsSource =#{paramsSource},tps.updateTime = now() where tps.id = #{id}
+    </update>
+</mapper>
+

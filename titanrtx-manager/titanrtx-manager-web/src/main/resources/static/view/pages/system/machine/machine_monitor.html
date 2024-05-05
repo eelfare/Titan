@@ -1,0 +1,60 @@
+<div class="layui-elem-quote" style="padding: 7px 0 7px 15px;">
+    <div class="layui-row layui-form">
+        <div class="layui-col-md2" style="margin-top: 8px;">
+            机器管理 &gt;&gt;<label class="titan-head-label">机器监控</label>
+        </div>
+        <div  class="layui-col-md5">
+            &nbsp;
+        </div>
+        <div class="layui-col-md2">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="text" name="startTime" id="startTime" class="layui-input"  placeholder="开始时间">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md2">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="text" name="endTime" id="endTime" class="layui-input" placeholder="结束时间">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md1">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn searchButton" lay-submit  ng-click="queryMonitor()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row" style="margin-top: 20px" >
+    <div class="layui-col-md6">
+        <div>
+            <label class="titan-head-label"> 网络流入率 单位: Mb/s</label>
+        </div>
+        <div id="netInChart"  style=" width: 830px; height: 320px;"></div>
+    </div>
+    <div class="layui-col-md6">
+        <div>
+            <label class="titan-head-label">网络流出率 单位: Mb/s</label>
+        </div>
+        <div id="netOutChart"  style=" width: 830px; height: 320px;"></div>
+    </div>
+</div>
+<div class="layui-row" style="margin-top: 30px" >
+    <div class="layui-col-md6">
+        <div>
+            <label class="titan-head-label"> CPU使用率 单位: %</label>
+        </div>
+        <div id="cpuChart"  style=" width: 830px; height: 320px;"></div>
+    </div>
+    <div class="layui-col-md6">
+        <div>
+            <label class="titan-head-label">内存使用率 单位: %</label>
+        </div>
+        <div id="memoryChart"  style=" width: 830px; height: 320px;"></div>
+    </div>
+</div>

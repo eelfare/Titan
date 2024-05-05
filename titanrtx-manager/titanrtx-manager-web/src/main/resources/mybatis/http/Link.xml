@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.http.LinkMapper">
+
+
+    <select id="selectAll" resultType="com.yunji.titanrtx.manager.dao.entity.http.LinkEntity">
+       SELECT * FROM http_link  WHERE deleted = 0 ORDER BY updateTime DESC LIMIT 20000
+    </select>
+
+    <select id="selectAllOfId" resultType="com.yunji.titanrtx.manager.dao.entity.http.LinkStatusEntity">
+       SELECT id,paramStatus FROM http_link  WHERE deleted = 0 ORDER BY updateTime DESC LIMIT 20000
+    </select>
+
+
+    <delete id="deleteById">
+        delete from http_link where id = #{id}
+    </delete>
+
+    <insert id="insert">
+        insert into http_link (name,protocol,url,method,contentType,charset,paramMode)
+        values (#{name},#{protocol},#{url},#{method},#{contentType},#{charset},#{paramMode})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.http.LinkEntity">
+        SELECT * FROM http_link where id = #{id}
+    </select>
+
+    <select id="selectByUrl" resultType="com.yunji.titanrtx.manager.dao.entity.http.LinkEntity">
+        SELECT * FROM http_link li where li.url = #{url} Limit 1
+    </select>
+
+    <!--    2020.08.28-->
+    <select id="selectLinkIds" resultType="int">
+        select id  from http_link group by id;
+    </select>
+
+    <update id="update">
+        update http_link li set   li.name =#{name},
+                               li.protocol = #{protocol},
+                               li.url =#{url},
+                               li.method =#{method},
+                               li.contentType =#{contentType},
+                               li.charset =#{charset},
+                               li.paramMode =#{paramMode},
+                               li.updateTime = now()
+        where li.id = #{id}
+    </update>
+
+
+    <select id="selectByIds" resultType="com.yunji.titanrtx.manager.dao.entity.http.LinkEntity">
+        SELECT * FROM http_link where
+        id in (
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectById" resultType="com.yunji.titanrtx.manager.dao.entity.http.LinkEntity">
+        SELECT * FROM http_link where id =#{id}
+    </select>
+
+    <select id="searchLinks" resultType="com.yunji.titanrtx.manager.dao.entity.http.LinkEntity">
+        select * from http_link l where l.name like CONCAT('%',#{key},'%') or l.url like CONCAT('%',#{key},'%')  order by l.updateTime desc
+    </select>
+
+
+    <select id="count" resultType="integer">
+        SELECT count(id) FROM http_link
+    </select>
+
+    <update id="updateParamOrderStatus">
+         update http_link li
+             set   li.paramStatus =#{status}
+         where li.id = #{id}
+    </update>
+
+</mapper>
+

@@ -1,0 +1,108 @@
+<div class="layui-row layui-col-space3 searchInputBackGroundWhite">
+    <div class="layui-col-md3">
+        <li class="layui-this customSearch">
+            <input type="text" ng-keyup="enterEvent($event,this)" class="layui-input"  ng-model="searchModel" placeholder=" 域名 | URL" >
+        </li>
+    </div>
+
+    <div class="layui-col-md8">&nbsp;</div>
+
+    <div class="layui-col-md1">
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 0">
+                <button class="layui-btn layui-btn-primary searchButton" ng-click="addOrEditRulesDialog()">添加规则</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row">
+    <table class="layui-table tableCursor" lay-skin="line">
+        <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col width=60>
+            <col width="1">
+            <col width="1">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>域名</th>
+            <th>路径</th>
+            <th>参数</th>
+            <th>类型</th>
+            <th>操作</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="rules in showModel">
+            <td>{{rules.id}}</td>
+            <td>{{rules.domain}}</td>
+            <td>{{rules.path}}</td>
+            <td>{{rules.param}}</td>
+            <td>{{rules.rulesType | converRulesType}}</td>
+            <td>
+                <a class="layui-btn layui-btn-xs" ng-click="addOrEditRulesDialog(rules.id)">编辑</a>
+            </td>
+            <td>
+                <a  class="layui-btn layui-btn-xs layui-btn-danger" ng-click="deleteRules(rules.id)">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="layui-row" id="indexModelPage"></div>
+</div>
+
+
+<div id="addOrEditRulesDialog"  style="display: none">
+    <blockquote class="layui-elem-quote layui-form" style="background-color: white;">
+        <legend>域名：{{rulesModel.domain}}</legend>
+        <hr class="layui-bg-red marginTopBottom15">
+        <legend>路径：{{rulesModel.path}}</legend>
+        <hr class="layui-bg-blue marginTopBottom15">
+        <legend>参数：{{rulesModel.param}}</legend>
+        <hr class="layui-bg-green marginTopBottom15">
+        <legend>类型：{{rulesModel.rulesType | converRulesType}}</legend>
+        <hr class="layui-bg-cyan marginTopBottom15">
+    </blockquote>
+    <form class="layui-form" >
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 50px!important;">域名：</label>
+            <div class="layui-input-block" style="margin-left: 80px;margin-right: 15px">
+                <input type="text" ng-model="rulesModel.domain" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 50px!important;">路径：</label>
+            <div class="layui-input-block" style="margin-left: 80px;margin-right: 15px">
+                <input type="text" ng-model="rulesModel.path"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 50px!important;">参数：</label>
+            <div class="layui-input-block" style="margin-left: 80px;margin-right: 15px">
+                <input type="text" ng-model="rulesModel.param" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 50px!important;">类型：</label>
+            <div class="layui-input-block" style="margin-left: 80px;margin-right: 15px">
+                <select lay-filter="rulesTypeFilter" lay-search>
+                    <option value="FILTER" ng-selected="rulesModel.rulesType == 'FILTER'">过滤</option>
+                    <option value="ENCRYPTION"  ng-selected="rulesModel.rulesType == 'ENCRYPTION'" >加密</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" >
+                <input type="text" ng-model="rulesModel.id"  name="id" autocomplete="off" class="layui-input layui-hide" />
+            </div>
+        </div>
+    </form>
+</div>
+

@@ -1,0 +1,40 @@
+<div class="layui-row searchInputBackGroundWhite">
+    <div class="layui-col-md3">
+        <li class="layui-this customSearch">
+            <input type="text" ng-keyup="enterEvent($event,this)"  class="layui-input" ng-model="searchModel" placeholder="用户名" >
+        </li>
+    </div>
+</div>
+
+<div class="layui-row">
+    <table class="layui-table tableCursor" lay-skin="line">
+        <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>用户名</th>
+            <th>类型</th>
+            <th>参数</th>
+            <th>时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="opsLog in showModel">
+            <td>{{$index+ 1}}</td>
+            <td>{{opsLog.userName}}</td>
+            <td>{{opsLog.pathName }}</td>
+            <td>{{opsLog.params}}</td>
+            <td>{{opsLog.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="layui-row" id="indexModelPage"></div>
+</div>
+
+

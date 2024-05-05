@@ -1,0 +1,185 @@
+<div class="layui-elem-quote">
+    批次管理 &gt;&gt;<label class="titan-head-label">{{isEdit? '编辑批次':'新增批次'}}</label>
+</div>
+
+<div class="layui-row conForm">
+    <div class="layui-col-md10 layui-form">
+        <blockquote class="layui-elem-quote">
+            <div class="layui-form-item">
+                <label class="layui-form-label">批次名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" ng-model="batchInfoModel.name" name="name" lay-verify="required"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="text" ng-model="batchInfoModel.id" name="id" autocomplete="off"
+                           class="layui-input layui-hide"/>
+                </div>
+            </div>
+        </blockquote>
+
+        <hr class="layui-bg-green">
+
+        <blockquote class="layui-elem-quote ">
+            <div>
+                任务清单
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 30px!important;">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col>
+                            <col>
+                            <col width=175>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>任务名称</th>
+                            <th>保存MySQL</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="task in tastEntitiesModel">
+                            <td>{{task.id}}</td>
+                            <td>{{task.name}}</td>
+                            <td>{{task.tableName}}</td>
+                            <td>
+                                <a class="layui-btn layui-btn-sm"
+                                   ng-click="addOrEditTaskParamSource(task.id)">配置</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-normal"
+                                   ng-click="moveTask(task.id,1)">上移</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-warm"
+                                   ng-click="moveTask(task.id,0)">下移</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-danger"
+                                   ng-click="deleteBatchWithTask(task)">删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="3">
+                                <input type="text" ng-keyup="enterEvent($event)" ng-model="searchTaskMode"
+                                       placeholder="任务ID | 任务名 " class="layui-input">
+                                <div class="layui-form-select" style="position: unset !important;">
+                                    <dl class="layui-anim layui-anim-upbit searchTaskNameSelect">
+                                        <dd ng-repeat="task in showTaskModel" ng-click="selectTask(task)">
+                                            {{task.id}}&nbsp;&nbsp;|&nbsp;&nbsp;{{task.name}}&nbsp;&nbsp;|&nbsp;&nbsp;{{task.tableName}}
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <hr class="layui-bg-green">
+            <div class="layui-row floatRight">
+                <a class="layui-btn titan-btn layui-btn-normal layui-btn-sm" id="batchSubmit" lay-submit
+                   lay-filter="batchSubmit">保存</a>
+                <a class="layui-btn layui-btn-primary layui-btn-sm" ng-click="goRoutePage('/batch',{})">取消</a>
+            </div>
+        </blockquote>
+    </div>
+</div>
+
+
+<div id="addOrEditTaskParamSourceDialog" style="display: none;">
+    <div class="layui-form" style="background-color: white;margin-top: 20px;margin-right: 100px;margin-left: 50px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">任务名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" ng-model="batchWithTaskModel.name"
+                       lay-verify="required"
+                       class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form layui-row layui-col-space3 searchInputBackGroundWhite" style="margin-left: 25px">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th style="text-align: center" lay-data="{field:'param'}" rowspan="2">参数</th>
+                    <th style="text-align: center" lay-data="{field:'type'}" rowspan="2">使用方式</th>
+                    <th style="text-align: center" lay-data="{align:'mysql'}" colspan="5">MYSQL</th>
+                </tr>
+                <tr>
+                    <th style="text-align: center" lay-data="{field:'task'}">关联任务</th>
+                    <th style="text-align: center" lay-data="{field:'table'}">表</th>
+                    <th style="text-align: center" lay-data="{field:'column'}">关联列</th>
+                    <th style="text-align: center" lay-data="{field:'all'}">获取所有</th>
+                    <th style="text-align: center" lay-data="{field:'filter'}">过滤字段</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="paramSource in paramSourceBosModel">
+                    <td style="text-align: center"> {{paramSource.paramName}}
+                    </td>
+                    <td style="text-align: center">
+                        <select id="{{'paramType' + $index}}" title="paramType">
+                            <option></option>
+                            <option value="0" ng-selected="paramSource.type == 0">可重用</option>
+                            <option value="1" ng-selected="paramSource.type == 1">不可重用</option>
+                            <option value="2" ng-selected="paramSource.type == 2">随机</option>
+                        </select>
+                    </td>
+
+                    <!-- 关联任务 -->
+                    <td ng-if="paramSource.finalVal != undefined">-</td>
+                    <td ng-if="paramSource.finalVal == undefined">
+                        <select-plus list-model="batchOwnTaskModel" lay-filter="{{paramSource.paramName+ $index}}"
+                                     yj-model="paramSource.sqlDeployBo.taskEntity"></select-plus>
+                    </td>
+
+
+                    <!-- 关联表名 -->
+                    <td ng-if="paramSource.finalVal != undefined">-</td>
+                    <td ng-if="paramSource.finalVal == undefined" style="text-align: center">
+                        {{paramSource.sqlDeployBo.taskEntity.tableName?paramSource.sqlDeployBo.taskEntity.tableName:'-'}}
+                    </td>
+
+                    <!-- 关联列名 -->
+                    <td ng-if="paramSource.finalVal != undefined">-</td>
+                    <td ng-if="paramSource.finalVal == undefined" style="text-align: center">
+                        <select-plus list-model="paramSource.sqlDeployBo.taskEntity.listOutputDeploy"
+                                     lay-filter="{{paramSource.paramName + '_1_'+$index}}"
+                                     yj-model="paramSource.sqlDeployBo.columnOutput"></select-plus>
+                    </td>
+
+                    <!-- 是否获取当前表的其他数据 -->
+                    <td ng-if="paramSource.finalVal != undefined">-</td>
+                    <td ng-if="paramSource.finalVal == undefined" style="text-align: center">
+                        <switch-plus yj-switch-model="paramSource.sqlDeployBo.selectAll"
+                                     lay-filter="{{'switchSelectAll' +paramSource.paramName}}" lay-text="ON|OFF"
+                                     name="taskTarget">
+                    </td>
+
+                    <!-- 过滤字段 -->
+                    <td ng-if="paramSource.finalVal != undefined">-</td>
+                    <td ng-if="paramSource.finalVal == undefined" style="text-align: center">
+                        <select-plus list-model="paramSource.sqlDeployBo.taskEntity.listOutputDeploy"
+                                     lay-filter="{{paramSource.paramName + '_2_'+ $index}}"
+                                     yj-model="paramSource.sqlDeployBo.filter">
+                            <option>-</option>
+                        </select-plus>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

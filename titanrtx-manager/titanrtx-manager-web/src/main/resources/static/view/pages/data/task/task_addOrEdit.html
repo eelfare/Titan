@@ -1,0 +1,285 @@
+<div class="layui-elem-quote">
+    任务管理 &gt;&gt;<label class="titan-head-label">{{isEdit? '编辑任务':'新增任务'}}</label>
+</div>
+
+<div class="layui-row conForm">
+    <div class="layui-col-md10 layui-form">
+        <blockquote class="layui-elem-quote ">
+            <div class="layui-form-item">
+                <label class="layui-form-label">目标任务：</label>
+                <div class="layui-input-block">
+                    <switch-plus yj-switch-model="taskInfoModel.isTarget"
+                                 lay-filter="switchTaskTarget" lay-text="ON|OFF" name="taskTarget">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">任务名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" ng-model="taskInfoModel.name" name="name" lay-verify="required"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">执行方式：</label>
+                <div class="layui-input-block">
+                    <select-static-plus yj-model="doMode"
+                                        list-model="protocolModel" lay-filter="doMode"
+                                        name="doMode"></select-static-plus>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">任务路径：</label>
+                <div class="layui-input-block">
+                    <input type="text" ng-model="taskInfoModel.url" name="url" lay-verify="required"
+                           class="layui-input">
+                </div>
+            </div>
+            <div ng-if="!taskInfoModel.isTarget && doMode != 'SOCKET'" class="layui-form-item">
+                <label class="layui-form-label">请求类型：</label>
+                <div class="layui-input-block">
+                    <select name="method" title="method">
+                        <option value="GET" ng-selected="taskInfoModel.method == 'GET'">GET</option>
+                        <option value="POST" ng-selected="taskInfoModel.method == 'POST'">POST</option>
+                    </select>
+                </div>
+            </div>
+            <div ng-if="(!taskInfoModel.isTarget && doMode != 'SOCKET')" class="layui-form-item">
+                <label class="layui-form-label">内容类型：</label>
+                <div class="layui-input-block">
+                    <select name="contentType" title="contentType">
+                        <option value="JSON" ng-selected="taskInfoModel.contentType == 'JSON'">application/json
+                        </option>
+                        <option value="XML" ng-selected="taskInfoModel.contentType == 'XML'">application/xml
+                        </option>
+                        <option value="Text" ng-selected="taskInfoModel.contentType == 'Text'">text/xml</option>
+                        <option value="RAW" ng-selected="taskInfoModel.contentType == 'RAW'">raw</option>
+                        <option value="BINARY" ng-selected="taskInfoModel.contentType == 'BINARY'">binary
+                        </option>
+                        <option value="JAVASCRIPT" ng-selected="taskInfoModel.contentType == 'JAVASCRIPT'">
+                            application/javascript
+                        </option>
+                        <option value="HTML" ng-selected="taskInfoModel.contentType == 'HTML'">text/html</option>
+                        <option value="XWWWFORMURLENCODED"
+                                ng-selected="taskInfoModel.contentType == 'XWWWFORMURLENCODED'">
+                            application/x-www-form-urlencoded
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">存储表名：</label>
+                <div class="layui-input-block">
+                    <input type="text" ng-model="taskInfoModel.tableName"
+                           name="tableName" lay-verify="required"
+                           class="layui-input" placeholder="表名（英文字母）">
+                </div>
+            </div>
+            <div class="layui-form-item" ng-if="taskInfoModel.isTarget">
+                <label class="layui-form-label">参数使用：</label>
+                <div class="layui-input-block">
+                    <select name="paramMode" title="paramMode">
+                        <option value="RANDOM" ng-selected="taskInfoModel.paramMode == 'RANDOM'">可重复</option>
+                        <option value="ORDER" ng-selected="taskInfoModel.paramMode == 'ORDER'">一次性</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="text" ng-model="taskInfoModel.id" name="id" autocomplete="off"
+                           class="layui-input layui-hide"/>
+                </div>
+            </div>
+        </blockquote>
+
+        <hr class="layui-bg-green">
+
+        <blockquote class="layui-elem-quote ">
+            <div>
+                参数配置:
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 30px!important;">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col>
+                            <col>
+                            <col width=175>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>参数名</th>
+                            <th>备注</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="params in taskParamsModel">
+                            <td><input ng-class="params.id" type="text" ng-model="params.name" class="layui-input"></td>
+                            <td><input ng-class="params.id" type="text" ng-model="params.extra" class="layui-input">
+                            </td>
+                            <td>
+                                <a class="layui-btn layui-btn-sm" ng-click="updateTaskParam(params.id)">保存</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-danger"
+                                   ng-click="deleteParam(params.id)">删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td>
+                                <input type="text" ng-model="inputParamName" class="layui-input">
+                            </td>
+                            <td>
+                                <input type="text" ng-model="inputParamExtra" class="layui-input">
+                            </td>
+                            <td>
+                                <a class="layui-btn layui-btn-sm " ng-click="insertTaskParam()">保存</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-danger" ng-click="clearInputParam()">删除</a>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </blockquote>
+
+        <hr ng-if="taskInfoModel.isTarget" class="layui-bg-green">
+
+        <blockquote ng-if="taskInfoModel.isTarget" class="layui-elem-quote ">
+            <div>
+                组装模板
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <div class="layui-input-block" style="margin-left: 30px!important;">
+                    <textarea placeholder="请输入内容" name="template" ng-model="taskInfoModel.template"
+                              lay-verify="required"
+                              class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <hr class="layui-bg-green">
+            <div class="layui-form-item" style="text-align: right">
+                <a class="layui-btn titan-btn layui-btn-normal layui-btn-sm" lay-submit
+                   lay-filter="taskSubmit" id="taskTargetSubmit">保存</a>
+                <a class="layui-btn layui-btn-primary layui-btn-sm" ng-click="goRoutePage('/link',{})">取消</a>
+            </div>
+        </blockquote>
+
+        <hr ng-if="!taskInfoModel.isTarget" class="layui-bg-green">
+
+        <blockquote ng-if="!taskInfoModel.isTarget" class="layui-elem-quote ">
+            <div>
+                数据存储:
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 30px!important;">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col>
+                            <col>
+                            <col>
+                            <col>
+                            <col width=175>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>列名</th>
+                            <th>数据来源</th>
+                            <th>数据类型</th>
+                            <th>表达式</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="output in taskOutputsModel">
+                            <td>{{output.name}}</td>
+                            <td>{{output.source}}</td>
+                            <td>{{output.type == undefined?"-":output.type}}</td>
+                            <td>{{output.source === "RESPONSE"?output.expr:"-"}}</td>
+                            <td>
+                                <a class="layui-btn layui-btn-sm" ng-click="addOrEditTaskOutput(output.id)">编辑</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-danger"
+                                   ng-click="deleteOutput(output.id)">删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <a class="layui-btn layui-btn-sm layui-btn-primary searchButton"
+                                   ng-click="addOrEditTaskOutput()">添加
+                                </a>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <hr class="layui-bg-green">
+
+            <div class="layui-form-item" style="text-align: right">
+                <a class="layui-btn titan-btn layui-btn-normal layui-btn-sm" lay-submit
+                   lay-filter="taskSubmit" id="taskSubmit">保存</a>
+                <a class="layui-btn layui-btn-primary layui-btn-sm" ng-click="goRoutePage('/link',{})">取消</a>
+            </div>
+        </blockquote>
+    </div>
+</div>
+
+
+<div id="addOrEditOutputDialog" style="display: none;">
+    <div class="layui-form" style="background-color: white;margin-top: 20px;margin-right: 100px;margin-left: 50px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">存储列名：</label>
+            <div class="layui-input-block">
+                <input type="text" ng-model="outputInfo.name" name="name" lay-verify="required"
+                       class="layui-input" placeholder="表中列名（英文名称）">
+            </div>
+        </div>
+        <div ng-repeat="monnkey in temp" class="layui-form layui-row layui-col-space3 searchInputBackGroundWhite">
+            <div class="layui-col-md6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">数据来源：</label>
+                    <div class="layui-input-block" tyle="margin-left: 80px;">
+                        <select-static-plus yj-model="outputInfo.source"
+                                            list-model="dataSourceModel" lay-filter="dataSource"></select-static-plus>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6" ng-if="outputInfo.source == 'PARAM'">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">关联参数：</label>
+                    <div class="layui-input-block" tyle="margin-left: 80px;">
+                        <select id="expression" title="param">
+                            <option ng-repeat="item in taskParamsModel" value="{{item.id}}">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md6" ng-if="outputInfo.source == 'RESPONSE'">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">表达式：</label>
+                    <div class="layui-input-block" tyle="margin-left: 80px;">
+                        <input type="text" id="jsonPath" name="name" lay-verify="required" ng-model="outputInfo.expr"
+                               class="layui-input" placeholder="JSONPath表达式">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-form-item" ng-if="outputInfo.source != 'IGNORE'">
+            <label class="layui-form-label">数据类型：</label>
+            <div class="layui-input-block">
+                <select id="type" title="type">
+                    <option value="STRING" ng-selected="outputInfo.type == 'STRING'">STRING</option>
+                    <option value="ARRAY" ng-selected="outputInfo.type == 'ARRAY'">ARRAY</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div>

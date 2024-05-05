@@ -1,0 +1,101 @@
+<div class="layui-elem-quote">
+    分组管理 &gt;&gt;<label class="titan-head-label">{{isEdit? '编辑分组':'新增分组'}}</label>
+</div>
+
+<div class="layui-row conForm">
+    <div class="layui-col-md10 layui-form">
+        <blockquote class="layui-elem-quote ">
+            <div class="layui-form-item">
+                <label class="layui-form-label">分组名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" ng-model="showGroupInfoModel.name" lay-verify="required"
+                           class="layui-input">
+                </div>
+            </div>
+
+        </blockquote>
+
+        <blockquote class="layui-elem-quote ">
+            <div class="layui-form-item">
+                <label class="layui-form-label">过滤清单：</label>
+                <div class="layui-input-block">
+                    <div class="layui-col-md1">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block" style="margin-left: 0">
+                                <button class="layui-btn layui-btn-primary searchButton" ng-click="addOrEditRecordDialog()">
+                                    添加
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table">
+                        <colgroup>
+                            <col>
+                            <col>
+                            <col>
+                            <col>
+                            <col width=100>
+                            <col width=120>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>域名</th>
+                            <th>路径</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in selectFilterModel">
+                            <td>{{item.id}}</td>
+                            <td>{{item.domain}}</td>
+                            <td style="max-width: 500px;overflow: auto">{{item.path}}</td>
+                            <td>
+                                <a class="layui-btn layui-btn-xs " ng-click="addOrEditRecordDialog(item.id)">详情</a>
+                                <a class="layui-btn layui-btn-xs layui-btn-danger" ng-click="deleteFilter(item.id)">删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <hr class="layui-bg-green">
+
+            <div class="layui-row floatRight">
+                <a class="layui-btn titan-btn layui-btn-normal layui-btn-sm" lay-submit lay-filter="groupSubmit">保存</a>
+                <a class="layui-btn layui-btn-primary layui-btn-sm" ng-click="goRoutePage('/blackGroup',{})">取消</a>
+            </div>
+        </blockquote>
+
+    </div>
+</div>
+
+
+
+<div id="addOrEditBlackListDialog"  style="display: none">
+    <blockquote class="layui-elem-quote layui-form" style="background-color: white;">
+        <legend>域名：{{recordModel.domain}}</legend>
+        <hr class="layui-bg-red marginTopBottom15">
+        <legend>路径：{{recordModel.path}}</legend>
+        <hr class="layui-bg-blue marginTopBottom15">
+    </blockquote>
+    <form class="layui-form" >
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 50px!important;">域名：</label>
+            <div class="layui-input-block" style="margin-left: 80px;margin-right: 15px">
+                <input type="text" ng-model="recordModel.domain" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 50px!important;">路径：</label>
+            <div class="layui-input-block" style="margin-left: 80px;margin-right: 15px">
+                <input type="text" ng-model="recordModel.path"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" >
+                <input type="text" ng-model="recordModel.id"  name="id" autocomplete="off" class="layui-input layui-hide" />
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1, userEntity-scalable=no">
+		<title>TITAN-登录</title>
+		<link rel="stylesheet" href="../vendor/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../css/login.css" />
+		<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+
+	</head>
+
+<body class="beg-login-bg">
+
+	  <div class="layui-row titan-index-header">
+	 		<div class="layui-col-md2">
+	  			<span class="titan-index-header-logo"><img src="../images/logo2.png" style="height: 40px;padding-left: 16px;"></span>
+	  		</div>
+	  		<div class="layui-col-md10" style="text-align: right;padding-right: 16px;">
+	  			<a href="../index.html" style="color: #fff;font-size: 14px;">首页</a>
+	  		</div>
+	  </div>
+
+	  <div class="beg-login-box" >
+			 <header>
+				<h1 style="text-align: left;padding-left: 50px;"><i class="layui-icon" style="font-size: 28px;">&#xe612;</i>&nbsp;&nbsp;登&nbsp;录</h1>
+			</header> 
+			<div class="beg-login-main">
+				<form  class="layui-form" method="post">
+					<div class="layui-form-item">
+						<label class="beg-login-icon">
+                        <i class="layui-icon">&#xe612;</i>
+                    </label>
+					 	<input type="text" name="phone" required lay-verify="required" autocomplete="off" placeholder="请输入账号" class="layui-input">
+					</div>
+					<div class="layui-form-item">
+						<label class="beg-login-icon">
+                        <i class="layui-icon">&#xe642;</i>
+                    </label>
+						<input type="password"  name="passWord" required lay-verify="required" autocomplete="off" placeholder="请输入密码" class="layui-input">
+					</div>
+					<div class="layui-form-item">
+						<div class="beg-pull-left beg-login-remember">
+							<label>记住账号？</label>
+							<input type="checkbox" id="rememberMe" name="rememberMe"  lay-filter="rememberSwitch" lay-skin="switch" lay-text="是|否" checked title="记住密码" >
+						</div>
+						<div class="beg-pull-right">
+							<button class="layui-btn layui-btn-primary" lay-submit lay-filter="login"  style="width: 140px;font-weight: bolder;">登&nbsp;&nbsp;录</button>
+						</div>
+						<div class="beg-clear"></div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="layui-row titan-index-footer">
+	  		 <div class="layui-col-md8 layui-col-md-offset2">
+				<ul>
+			  		<li><span>Power by云集研发中心基础架构组 Copyright &copy; 2017~2018</span><span><a href="https://github.com/yunjiweidian/TITAN" target="_black"><img alt="github" src="../images/github.png" style="height: 32px;"></a></span></li>
+			  	</ul>
+			 </div>
+		</div>
+
+<
+      <script type="text/javascript" src="../vendor/layui/layui.all.js"></script>
+      <script type="text/javascript" src="../js/u/layuiAjax.js"></script>
+      <script>
+          layui.$(function  () {
+              layui.use('form', function(){
+                  layui.form.on('submit(login)', function(data){
+                      layui.$.yunJiAjaxPost("login/verify.query",data.field,function (resp) {
+                          if (resp.code === 1){
+                              window.location.href="../view/main.html";
+                          }
+                          layer.msg(resp.msg);
+                      });
+                      return false;
+                  });
+              });
+          })
+      </script>
+
+	</body>
+</html>

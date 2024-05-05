@@ -1,0 +1,105 @@
+<div class="layui-side" style="background-color: #20222A !important;">
+    <div class="layui-side-scroll">
+        <ul class="layui-nav layui-nav-tree" style="background-color: #20222A !important;">
+            <li class="layui-nav-item" ng-class="path ==''? 'layui-this':''">
+                <a ng-href="#/" ng-click="reloadRoutePage('')">概览
+                </a>
+            </li>
+            <li class="layui-nav-item layui-nav-itemed">
+                <a href="javascript:">HTTP压测</a>
+                <dl class="layui-nav-child">
+                    <dd ng-class="path =='link' || path =='linkAddOrEdit' ? 'layui-this':''">
+                        <a ng-href="#/link" ng-click="reloadRoutePage('link')">链路管理</a>
+                    </dd>
+                    <dd ng-class="path =='httpScene' || path =='httpSceneAddOrEdit'? 'layui-this':''">
+                        <a ng-href="#/httpScene" ng-click="reloadRoutePage('httpScene')">场景管理</a>
+                    </dd>
+                    <dd ng-class="path =='httpReport' || path =='httpReportDetail' ? 'layui-this':''">
+                        <a ng-href="#/httpReport" ng-click="reloadRoutePage('httpReport')">报告管理</a>
+                    </dd>
+                </dl>
+            </li>
+
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:">DUBBO压测</a>
+                <dl class="layui-nav-child">
+                    <dd ng-class="path =='service'|| path == 'serviceAddOrEdit'? 'layui-this':''">
+                        <a ng-href="#/service" ng-click="reloadRoutePage('service')">服务管理</a>
+                    </dd>
+                    <dd ng-class="path =='dubboScene' || path =='dubboSceneAddOrEdit'? 'layui-this':''">
+                        <a ng-href="#/dubboScene" ng-click="reloadRoutePage('dubboScene')">场景管理</a>
+                    </dd>
+                    <dd ng-class="path =='dubboReport' || path =='dubboReportDetail' ? 'layui-this':''">
+                        <a ng-href="#/dubboReport" ng-click="reloadRoutePage('dubboReport')">报告管理</a>
+                    </dd>
+                </dl>
+            </li>
+
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:">流量构造</a>
+                <dl class="layui-nav-child">
+                    <dd ng-class="path =='task' || path =='taskAddOrEdit' ? 'layui-this':''">
+                        <a ng-href="#/task" ng-click="reloadRoutePage('task')">任务管理</a>
+                    </dd>
+                    <dd ng-class="path =='batch' || path =='batchAddOrEdit'  ? 'layui-this':''">
+                        <a ng-href="#/batch" ng-click="reloadRoutePage('batch')">批次管理</a>
+                    </dd>
+                </dl>
+            </li>
+
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:">自动化工具</a>
+                <dl class="layui-nav-child">
+                    <dd ng-class="path =='autoTestDeploy' ? 'layui-this':''">
+                        <a ng-href="#/autoTestDeploy" ng-click="reloadRoutePage('autoTestDeploy')">调度区</a>
+                    </dd>
+                    <dd ng-class="path =='topLink' ? 'layui-this':''">
+                        <a ng-href="#/topLink" ng-click="reloadRoutePage('topLink')">生成场景</a>
+                    </dd>
+                    <dd ng-class="path =='autoTop' ? 'layui-this':''">
+                        <a ng-href="#/autoTop" ng-click="reloadRoutePage('autoTop')">TOP300</a>
+                    </dd>
+                    <dd ng-class="path =='blackGroup' || path=='blackGroupAddOrEdit' ? 'layui-this':''">
+                        <a ng-href="#/blackGroup" ng-click="reloadRoutePage('blackGroup')">黑名单</a>
+                    </dd>
+                    <dd ng-class="path =='whiteList' ? 'layui-this':''">
+                        <a ng-href="#/whiteList" ng-click="reloadRoutePage('whiteList')">白名单</a>
+                    </dd>
+                </dl>
+            </li>
+
+
+            <!--    <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:">数据工厂</a>
+                    <dl class="layui-nav-child">
+                        <dd ng-class="path =='data'|| path == 'dataManager' ? 'layui-this':''">
+                            <a  ng-href="#/data" ng-click="reloadRoutePage('data')">参数管理</a>
+                        </dd>
+                    </dl>
+                </li>-->
+
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:">系统设置</a>
+                <dl class="layui-nav-child">
+                    <dd ng-class="path =='machine' || path == 'machineMonitor' ? 'layui-this':''">
+                        <a ng-href="#/machine" ng-click="reloadRoutePage('machine')">机器管理</a>
+                    </dd>
+                    <dd ng-if="userSession.root"
+                        ng-class="path =='user'|| path == 'userAdd'|| path == 'userEdit'? 'layui-this':''">
+                        <a ng-href="#/user" ng-click="reloadRoutePage('user')">用户管理</a>
+                    </dd>
+                    <dd ng-if="userSession.root" ng-class="path =='opsLog'? 'layui-this':''">
+                        <a ng-href="#/opsLog" ng-click="reloadRoutePage('opsLog')">日志信息</a>
+                    </dd>
+                    <!--<dd ng-if="userSession.userName == 'root'" ng-class="path =='opsLog'? 'layui-this':''">
+                        <a ng-href="#/opsLog" ng-click="reloadRoutePage('opsLog')">日志信息</a>
+                    </dd>-->
+                    <dd ng-class="path =='rulesLink'? 'layui-this':''">
+                        <a ng-href="#/rulesLink" ng-click="reloadRoutePage('rulesLink')">日志过滤</a>
+                    </dd>
+                </dl>
+            </li>
+
+        </ul>
+    </div>
+</div>

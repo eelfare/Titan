@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.system.PathMapper">
+
+
+    <insert id="insert">
+        insert into path (name,uri)
+        values (#{name},#{uri})
+    </insert>
+
+    <delete id="deleteById">
+        delete from path where id = #{id}
+    </delete>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.system.PathEntity">
+        select * from path where id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="com.yunji.titanrtx.manager.dao.entity.system.PathEntity">
+        select * from path r order by r.updateTime
+    </select>
+
+    <select id="findByUriPath" resultType="com.yunji.titanrtx.manager.dao.entity.system.PathEntity">
+        select * from path where uri = #{uri}
+    </select>
+
+
+</mapper>
+

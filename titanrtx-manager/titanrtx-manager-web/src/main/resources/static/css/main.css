@@ -1,0 +1,267 @@
+body{
+    font: 14px Helvetica Neue,Helvetica,PingFang SC,\5FAE\8F6F\96C5\9ED1,Tahoma,Arial,sans-serif !important;
+}
+
+.titan-index-header{
+    background-color: #20222A !important;
+    color:#FFFFFF;
+    height: 42px;
+    line-height: 42px;
+    font-size: 22px;
+    text-shadow: rgba(0,0,0,0.9) 0 1px 2px;
+    border-bottom:1px solid #868C91;
+}
+
+.layui-side , .layui-body{
+    top: 42px !important;
+}
+.layui-container{
+    width: 100% !important;
+}
+
+
+/*overview*/
+#agentInfoChart{
+    height:200px;
+    width:100%;
+    min-width:460px;
+    border:1px solid #d1d5da;
+    border-radius:5px;
+    display:inline-block;
+}
+.titan-overview-operate{
+    /* background-color: gray;   */
+    position: relative;
+    top: -32px;
+    left: 18px;
+    width: 180px;
+}
+.titan-overview-operate span{
+    padding: 0 10px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+.titan-overview-operate i{
+    font-size: 20px;
+}
+.titan-overview-operate i:hover{
+    font-size: 21px;
+}
+.titan-overview-operate i:active{
+    font-size: 20px;
+}
+.titan-overview-operate .titan-overview-start{
+    color: #2CB044;
+}
+.titan-overview-operate .titan-overview-stop{
+    color: #FF5722;
+}
+.titan-overview-operate .titan-overview-restart{
+    color: #7BC96F;
+}
+
+.layui-field-box{
+    height: 320px !important;
+    width: 95% !important;
+}
+.ov-tab-head{
+    width: 56px;
+    background-color: #009688;
+    color: #FFFFFF;
+}
+.ov-tab-num{
+    cursor: pointer;
+}
+.ov-tab-num span{
+    color: #009688;
+    font-weight: bold;
+    padding: 0 2px;
+}
+
+pre { padding: 5px; margin: 5px; }
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
+
+
+.titanx-form-label{
+    padding: 9px 4px 9px 4px !important;
+}
+
+/*link*/
+.searchInputBackGroundWhite{
+    background-color: white !important;
+}
+.customSearch{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+    position: relative;
+    float: left;
+    line-height: 30px;
+    min-width: 65px;
+    padding: 0 15px;
+    border-bottom-style: solid;
+    margin-bottom: 5px;
+    cursor: pointer;
+    color: #5FB878;
+}
+.customSearch input{
+    border: 0;
+    width: 205px;
+    text-align: center;
+}
+.floatRight{
+    float: right;
+    margin-top: 6px;
+}
+.paramsOperation{
+    padding: 9px 0 9px 10px !important;
+    text-align: right
+}
+
+/*inkAdd*/
+.conForm{
+    background-color: white
+}
+.conForm .layui-form  blockquote{
+    background-color: white !important;
+}
+.layui-elem-quote  .layui-form-item  .layui-form-label  span{
+    color: red;
+}
+.iconColor{
+    color: #FF5722;
+}
+
+
+.speParams{
+    cursor: pointer;
+}
+
+.searchLinkNameSelect{
+    display: block;
+    margin-top: 15px;
+}
+ .layadmin-backlog-body {
+    display: block;
+    padding: 10px 15px;
+    background-color: #f2f2f2;
+    color: #999;
+    border-radius: 2px;
+    transition: all .3s;
+    -webkit-transition: all .3s;
+}
+.layadmin-backlog-body h3 {
+    padding-bottom: 10px;
+    font-size: 12px;
+}
+.layadmin-backlog-body p cite {
+    font-style: normal;
+    font-size: 30px;
+    font-weight: 300;
+    color: #009688;
+}
+.layui-card  .layui-card-body  .layui-carousel{
+    background-color: white !important;
+}
+.titan-head-label{
+    color: #5FB878;
+}
+
+/*data*/
+.dataContainer{
+    background-color: #F2F2F2;
+}
+.fly-extend-list {
+    position: relative;
+    padding: 30px;
+    line-height: 24px;
+    color: #999;
+    transition: all .3s;
+    -webkit-transition: all .3s;
+}
+.fly-extend-list-header {
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 20px;
+    color: #999;
+}
+.fly-extend-list-header .fly-extend-title {
+    font-size: 20px;
+    padding-right: 150px;
+}
+.fly-extend-list-header .layui-badge {
+    top: -2px;
+    margin-left: 5px;
+}
+.layui-badge {
+    height: 20px;
+    line-height: 20px;
+    border-radius: 2px;
+}
+.fly-extend-list-info {
+    position: absolute;
+    max-width: 200px;
+    height: 40px;
+    right: 0;
+    top: 0;
+    overflow: hidden;
+}
+.fly-extend-list-user cite {
+    padding: 0 3px;
+}
+.fly-extend-list-user img {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+}
+.fly-extend-list a {
+    color: #999;
+}
+.fly-extend-list-desc {
+    height: 48px;
+    line-height: 24px;
+    overflow: hidden;
+    color: #999;
+    word-wrap: break-word;
+}
+
+.layadmin-takerates {
+    padding-top: 5px;
+}
+.layadmin-takerates .layui-progress {
+    margin: 50px 0 60px;
+}
+.layadmin-takerates .layui-progress h3 {
+    position: absolute;
+    right: 0;
+    top: -35px;
+    color: #999;
+    font-size: 14px;
+}
+.layadmin-takerates .layui-progress-bar {
+    text-align: left;
+}
+.layadmin-takerates .layui-progress-text {
+    top: -35px;
+    line-height: 26px;
+    font-size: 26px;
+}
+.layui-elem-quote .layui-form .layui-form-item{
+   margin-bottom: 0;
+}
+.layui-elem-quote .layui-form .layui-form-item .layui-input-block{
+    margin-left: 0;
+}
+.searchButton{
+    width: 100%;
+}
+.marginTopBottom15{
+    margin: 15px 0 15px 0;
+}

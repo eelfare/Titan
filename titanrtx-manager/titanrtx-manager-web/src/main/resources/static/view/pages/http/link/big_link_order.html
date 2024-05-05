@@ -1,0 +1,39 @@
+<div class="layui-row layui-col-space3 searchInputBackGroundWhite">
+    <div class="layui-col-md3">
+        <li class="layui-this customSearch">
+            <input type="text" ng-keyup="enterEvent($event,this)" class="layui-input" ng-model="searchModel"
+                   placeholder="链路ID|链路名|URL">
+        </li>
+    </div>
+    <div class="layui-col-md8">&nbsp;</div>
+</div>
+
+<div class="layui-row">
+    <table class="layui-table tableCursor" lay-skin="line">
+        <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col width=60>
+            <col width="5">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>URL</th>
+            <th>参数总量</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="link in showModel">
+            <td>{{link.id}}</td>
+            <td>{{link.name}}</td>
+            <td>{{link.protocol+"://"+link.url}}</td>
+            <td>{{link.count}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="layui-row" id="indexModelPage"></div>
+</div>

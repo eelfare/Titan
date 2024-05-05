@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.auto.AutoDeployHisMapper">
+
+    <select id="selectAll" resultType="com.yunji.titanrtx.manager.dao.entity.auto.AutoDeployHisEntity">
+      SELECT * FROM auto_deploy_his s  order by s.updateTime desc limit 200
+    </select>
+
+    <delete id="deleteById">
+        delete from auto_deploy_his where id = #{id}
+    </delete>
+
+    <insert id="insert">
+        insert into auto_deploy_his (id, content)
+        values (#{id},#{content})
+    </insert>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.auto.AutoDeployHisEntity">
+        SELECT * FROM auto_deploy_his s where s.id = #{id}
+    </select>
+
+    <update id="update">
+        update auto_deploy_his s set
+                             s.content =#{content},
+                             s.updateTime = now()
+        where s.id = #{id}
+    </update>
+</mapper>
+

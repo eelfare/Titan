@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+			http://code.alibabatech.com/schema/dubbo
+			http://code.alibabatech.com/schema/dubbo/dubbo.xsd">-->
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="titanrtx-manager"/>
+    <dubbo:registry protocol="zookeeper" address="${zkAddress}"/>
+    <dubbo:protocol name="dubbo" port="${dubboPort}" payload="${dubbo.payload}"/>
+    <!--依赖服务-->
+    <dubbo:reference id="commanderService" interface="com.yunji.titanrtx.common.service.CommanderService" check="false"
+                     version="1.0.0" retries="0"/>
+
+    <dubbo:reference id="screenshotService" interface="com.yunji.titanrtx.common.service.ScreenshotService"
+                     check="false" version="1.0.0" retries="0"/>
+
+
+    <dubbo:service interface="com.yunji.titanrtx.common.service.CommanderReportService" ref="commanderReportServiceImpl"
+                   version="1.0.0" timeout="60000"/>
+
+    <bean id="commanderReportServiceImpl" class="com.yunji.titanrtx.manager.service.CommanderReportServiceImpl"/>
+
+    <dubbo:service interface="com.yunji.titanrtx.manager.service.SceneOperatingCenterService"
+                   ref="sceneOperatingCenterServiceImpl"
+                   version="1.0.0" retries="0" timeout="5000"/>
+
+    <dubbo:service interface="com.yunji.titanrtx.manager.service.BatchCenterService"
+                   ref="batchCenterService"
+                   version="1.0.0" retries="0" timeout="5000"/>
+
+    <bean id="sceneOperatingCenterServiceImpl"
+          class="com.yunji.titanrtx.manager.service.SceneOperatingCenterServiceImpl"/>
+    <bean id="batchCenterService"
+          class="com.yunji.titanrtx.manager.service.BatchCenterServiceImpl"/>
+
+    <bean id="influxService" class="com.yunji.titanrxt.plugin.influxdb.InfluxService">
+        <constructor-arg index="0" value="${influxDB.url}"/>
+    </bean>
+
+    <bean id="zookeeperService" class="com.yunji.titanrtx.common.zookeeper.CuratorService">
+        <constructor-arg value="${zkAddress}"/>
+    </bean>
+</beans>

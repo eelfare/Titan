@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.http.HttpBaseLineMapper">
+
+
+    <insert id="insert">
+        insert into http_base_line (sceneId,linkId,baseLine)
+        values (#{sceneId},#{linkId},#{baseLine})
+    </insert>
+
+    <update id="update">
+        update http_base_line s set
+                             s.baseLine=#{baseLine},
+                             s.updateTime = now()
+        where s.id = #{id}
+    </update>
+
+    <select id="selectBySceneIdAndLinkId" resultType="com.yunji.titanrtx.manager.dao.entity.http.HttpBaseLineEntity">
+        select * from http_base_line r where r.sceneId = #{sceneId} and r.linkId = #{linkId}
+    </select>
+
+    <select id="selectBySceneId" resultType="com.yunji.titanrtx.manager.dao.entity.http.HttpBaseLineEntity">
+        select * from http_base_line r where r.sceneId = #{sceneId}
+    </select>
+</mapper>
+

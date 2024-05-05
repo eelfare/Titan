@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.dubbo.ServiceParamsMapper">
+
+
+    <select id="selectAllIdByServiceId" resultType="integer">
+        SELECT sp.id FROM service_params sp where sp.serviceId = #{serviceId} and sp.deleted = 0 order by sp.updateTime desc limit 10000
+    </select>
+
+
+    <delete id="deleteById">
+        delete from service_params where id = #{id}
+    </delete>
+
+    <delete id="deleteAllByServiceId">
+        delete from service_params where serviceId = #{serviceId}
+    </delete>
+
+    <insert id="insert">
+        insert into service_params (serviceId,param)
+        values (#{serviceId},#{param})
+    </insert>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.dubbo.ServiceParamsEntity">
+        SELECT * FROM service_params sp where sp.id = #{id}
+    </select>
+
+
+    <select id="selectByServiceId" resultType="com.yunji.titanrtx.manager.dao.entity.dubbo.ServiceParamsEntity">
+        SELECT * FROM service_params sp where sp.serviceId = #{serviceId} order by sp.updateTime desc
+    </select>
+
+
+    <select id="findTotalRecordsByServiceId" resultType="int">
+        SELECT count(*) FROM service_params WHERE serviceId =#{dubboServiceId}
+    </select>
+
+    <select id="findMaxIdByServiceId" resultType="Integer">
+        SELECT max(id) FROM service_params WHERE serviceId =#{dubboServiceId}
+    </select>
+
+    <select id="findOrdersById" resultType="int">
+        SELECT orders FROM service_params WHERE id =#{id}
+    </select>
+
+
+    <update id="update">
+        update service_params sp set sp.param =#{param},sp.updateTime = now() where sp.id = #{id}
+    </update>
+
+
+    <insert id="batchInsertList">
+        insert into service_params (serviceId,param)
+        values
+        <foreach item="item" index="index" collection="paramsEntities" separator=",">
+            (#{item.serviceId},#{item.param})
+        </foreach>
+    </insert>
+
+</mapper>
+

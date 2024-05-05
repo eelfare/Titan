@@ -1,0 +1,51 @@
+<div class="layui-row layui-col-space30 " >
+    <div class="layui-col-md6" >
+        <div class="layui-row layui-elem-quote">状态：</div>
+        <div class="layui-row">
+            <div id="agentInfoChart"></div>
+            <div class="titan-overview-operate">
+                <label>操作：</label>
+                <span><i class="layui-icon titan-overview-start"  ng-click="restartAll()"  title="重启">&#xe652;</i></span>
+                <span><i class="layui-icon titan-overview-stop"   ng-click="resetAll()"   title="重置">&#xe651;</i></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-col-md6" >
+        <div class="layui-row layui-elem-quote">我的全链路压测：</div>
+        <div class="layui-row"  style="min-width: 753px;">
+            <table class="layui-table" style="height: 200px;">
+                <tbody>
+                <tr>
+                    <td class="ov-tab-head"><i class="layui-icon">&#xe64c;&nbsp;</i>链路</td>
+                    <td class="ov-tab-num" ng-click="goRoutePage('/link',{})">您当前有<span>{{overviewModel.infoModel.linkCount}}</span>个链路</td>
+                </tr>
+                <tr>
+                    <td class="ov-tab-head"><i class="layui-icon">&#xe715;&nbsp;</i>场景</td>
+                    <td class="ov-tab-num" ng-click="goRoutePage('/httpScene',{})">您当前有<span>{{overviewModel.infoModel.sceneCount}}</span>个场景</td>
+                </tr>
+                <tr>
+                    <td class="ov-tab-head"><i class="layui-icon">&#xe63c;&nbsp;</i>报告</td>
+                    <td class="ov-tab-num" ng-click="goRoutePage('/httpReport',{})">您当前有<span>{{overviewModel.infoModel.reportCount}}</span>个报告</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row">
+    <div class="layui-row layui-elem-quote">监控：</div>
+    <div class="layui-col-md6" >
+        <fieldset class="layui-elem-field">
+            <legend style="font-size: 16px;">网络出口率(Mb/s)</legend>
+                 <div id="netOutChart" class="layui-field-box"></div>
+        </fieldset>
+    </div>
+    <div class="layui-col-md6" >
+        <fieldset class="layui-elem-field">
+            <legend style="font-size: 16px;">网络入口率(Mb/s)</legend>
+                <div id="netInChart" class="layui-field-box"></div>
+        </fieldset>
+    </div>
+</div>

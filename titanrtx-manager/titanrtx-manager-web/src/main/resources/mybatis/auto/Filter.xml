@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.auto.FilterMapper">
+
+    <select id="selectAll"  resultType="com.yunji.titanrtx.manager.dao.entity.auto.FilterEntity">
+      SELECT * FROM filter s  order by s.updateTime desc
+    </select>
+
+    <select id="findByGroupId"  resultType="com.yunji.titanrtx.manager.dao.entity.auto.FilterEntity">
+      SELECT * FROM filter s where s.group_id = #{groupId} order by s.updateTime desc
+    </select>
+
+
+    <delete id="deleteById">
+        delete from filter where id = #{id}
+    </delete>
+
+
+    <insert id="insert">
+        insert into filter (group_id,domain,path)
+        values (#{groupId},#{domain},#{path})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.auto.FilterEntity">
+        SELECT * FROM filter s where s.id = #{id}
+    </select>
+
+
+    <update id="update">
+        update filter s set
+                             s.domain =#{domain},
+                             s.path =#{path},
+                             s.updateTime = now()
+        where s.id = #{id}
+    </update>
+
+</mapper>
+

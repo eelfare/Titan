@@ -1,0 +1,368 @@
+<div class="layui-elem-quote">
+    场景管理 &gt;&gt;<label class="titan-head-label">{{isEdit ? '编辑场景' : '新增场景'}}</label>
+</div>
+
+<div carousel-item="">
+    <ul class="layui-row layui-col-space10 layui-this">
+        <li class="layui-col-md3">
+            <a class="layadmin-backlog-body">
+                <h3>最大并发数</h3>
+                <p>
+                    <cite>{{sceneMetaModel.totalSize * sceneMetaModel.concurrent}}</cite>
+                </p>
+            </a>
+        </li>
+        <li class="layui-col-md3">
+            <a class="layadmin-backlog-body">
+                <h3>可用并发数</h3>
+                <p>
+                    <cite>{{sceneMetaModel.availableSize * sceneMetaModel.concurrent}}</cite>
+                </p>
+            </a>
+        </li>
+        <li class="layui-col-md3">
+            <a class="layadmin-backlog-body">
+                <h3>总压测机数</h3>
+                <p>
+                    <cite>{{sceneMetaModel.totalSize}}</cite>
+                </p>
+            </a>
+        </li>
+        <li class="layui-col-md3">
+            <a class="layadmin-backlog-body">
+                <h3>可用压测机数</h3>
+                <p>
+                    <cite>{{sceneMetaModel.availableSize}}</cite>
+                </p>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="layui-row conForm">
+    <div class="layui-col-md10 layui-form">
+        <blockquote class="layui-elem-quote ">
+            <div class="layui-form-item">
+                <label class="layui-form-label">场景名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" ng-model="showSceneInfoModel.name" lay-verify="required"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">每秒并发：</label>
+                <div class="layui-input-block">
+                    <input type="number" name="concurrent" ng-model="showSceneInfoModel.concurrent"
+                           ng-change="editConcurrent()"
+                           lay-verify="required" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">总请求量：</label>
+                <div class="layui-input-block">
+                    <input type="number" name="total" ng-model="showSceneInfoModel.total" lay-verify="required"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">停止时间：</label>
+                <div class="layui-input-block">
+                    <input type="number" name="timeout" ng-model="showSceneInfoModel.timeout" lay-verify="required"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">期待QPS：</label>
+                <div class="layui-input-block">
+                    <input type="number" name="throughPut" ng-model="showSceneInfoModel.throughPut"
+                           lay-verify="required" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">压测策略：</label>
+                <div class="layui-input-block">
+                    <select name="strategy" title="strategy" ng-model="showSceneInfoModel.strategy"
+                            ng-init="showSceneInfoModel.strategy='FIXATION'" id="strategy">
+                        <option value="FIXATION">固定</option>
+                        <option value="GENTLY">平缓</option>
+                        <option value="PEAK">尖峰</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">流量策略：</label>
+                <div class="layui-input-block">
+                    <select name="flow" title="flow"
+                            ng-model="showSceneInfoModel.flow" ng-init="showSceneInfoModel.flow='AUTO'" id="flow">
+                        <option value="AUTO">自动</option>
+                        <option value="AVERAGE">平均</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">链路秩序：</label>
+                <div class="layui-input-block">
+                    <select name="sequence" title="sequence" ng-model="showSceneInfoModel.sequence"
+                            ng-init="showSceneInfoModel.sequence='IN'" id="sequence">
+                        <option value="IN">顺序</option>
+                        <option value="OUT">乱序</option>
+                        <!--  <option value="bunch"  ng-selected="showSceneInfoModel.sequence == 'bunch'">串序</option>-->
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">分配规则：</label>
+                <div class="layui-input-block">
+                    <label>
+                        <input type="radio" value="WEIGHT" name="allot"
+                               ng-model="showSceneInfoModel.allot" ng-init="showSceneInfoModel.allot='WEIGHT'"/>
+
+                        权重</label>
+                    <label style="margin-left: 20px">
+                        <input type="radio" value="QPS" name="allot"
+                               ng-model="showSceneInfoModel.allot"/>
+                        QPS
+                    </label>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">告警地址：</label>
+                <div class="layui-input-block">
+                    <input name="webhook" ng-model="showSceneInfoModel.webhook" class="layui-input"/>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">告警阈值：</label>
+                <div class="layui-input-block">
+
+                    <input name="alertThreshold" ng-model="showSceneInfoModel.alertThreshold" class="layui-input"
+                           placeholder="单链路失败百分率达到阈值才会告警(监控场景使用，其他忽略)"/>
+                </div>
+            </div>
+
+            <div class="layui-col-md5">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="text" ng-model="showSceneInfoModel.id" name="id" autocomplete="off"
+                               class="layui-input layui-hide"/>
+                    </div>
+                </div>
+            </div>
+
+        </blockquote>
+
+        <blockquote class="layui-elem-quote ">
+            <div class="layui-form-item">
+                <label ng-if="showSceneInfoModel.allot ==='WEIGHT'" class="layui-form-label">首链路权重值：</label>
+                <label ng-if="showSceneInfoModel.allot ==='QPS'" class="layui-form-label">首链路QPS值：</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="autoInput" ng-model="autoInput" ng-change="autoComputer()"
+                           class="layui-input" placeholder="参照第一条链路">
+                </div>
+                <div>
+                    <a class="layui-btn titan-btn layui-btn-normal layui-btn-sm" ng-click="resetAllot()">重置</a>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择链路：</label>
+                <div class="layui-input-block">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col>
+                            <col>
+                            <col>
+                            <col>
+                            <col>
+                            <col width=100>
+                            <col width=120>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>URL</th>
+                            <th>数量</th>
+                            <th>比例</th>
+                            <th ng-if="showSceneInfoModel.allot !='QPS'">权重</th>
+                            <th ng-if="showSceneInfoModel.allot !='QPS'">QPS分配量</th>
+                            <th ng-if="showSceneInfoModel.allot =='QPS'">QPS</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="link in selectLinkModel">
+                            <td>{{$index + 1}}</td>
+                            <td>{{link.id}}</td>
+                            <td>{{link.name}}</td>
+                            <td style="max-width: 500px;overflow: auto">{{link.protocol + "://" + link.url}}</td>
+                            <td>{{link.paramNum}}</td>
+                            <td>{{link.scale}}</td>
+                            <td ng-if="showSceneInfoModel.allot !='QPS'"><input type="text" ng-model="link.weight"
+                                                                                class="layui-input"
+                                                                                ng-change="changeWeight()"></td>
+                            <td ng-if="showSceneInfoModel.allot !='QPS'">{{link.weightShareQps}}</td>
+                            <td ng-if="showSceneInfoModel.allot =='QPS'"><input type="text" ng-model="link.qps"
+                                                                                ng-change="editQps($index)"
+                                                                                class="layui-input"></td>
+                            <td>
+                                <a class="layui-btn layui-btn-xs " ng-click="paramDialog(link.id)">详情</a>
+                                <a class="layui-btn layui-btn-xs layui-btn-danger" ng-click="removeLink($index)">删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <input type="text" ng-keyup="enterEvent($event)" ng-model="searchLinkMode"
+                                       placeholder="链路ID | 链路名 | URL" class="layui-input">
+                                <div class="layui-form-select" style="position: unset !important;">
+                                    <dl class="layui-anim layui-anim-upbit searchLinkNameSelect">
+                                        <dd ng-repeat="linkModel in showLinkModel" ng-click="selectLinkName(linkModel)">
+                                            {{linkModel.id}}&nbsp;&nbsp;|&nbsp;&nbsp;{{linkModel.name}}&nbsp;&nbsp;|&nbsp;&nbsp;{{linkModel.url}}
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <hr class="layui-bg-green">
+            <div class="layui-row floatRight">
+                <a class="layui-btn titan-btn layui-btn-normal layui-btn-sm" lay-submit lay-filter="sceneSubmit">保存</a>
+                <a class="layui-btn layui-btn-primary layui-btn-sm" ng-click="goRoutePage('/httpScene',{})">取消</a>
+            </div>
+        </blockquote>
+
+    </div>
+</div>
+
+
+<div id="paramDialog" style="display: none">
+    <div class="layui-card">
+        <div class="layui-card-body layadmin-takerates">
+            <div class="layui-carousel">
+                <div class="layui-row ">
+
+                    <div class="layui-form-item layui-row layui-col-space10"
+                         style="margin-bottom: 0 !important;margin-top: 10px">
+                        <div class="layui-col-md4">
+                            <label class="layui-form-label speParams"
+                                   ng-click="describeParamsDialog('http')">参数说明：</label>
+                        </div>
+                        <div class="layui-col-md8" style="text-align: right">
+                            <button class="layui-btn layui-btn-primary layui-btn-sm"
+                                    ng-click="pullHttParams(currentLinkId)">获取
+                            </button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm"
+                                    ng-click="batchImportParams(currentLinkId)">批导
+                            </button>
+                            <a class="layui-btn layui-btn-primary layui-btn-sm"
+                               ng-click="batchDoParamCase(currentLinkId)">批测</a>
+                            <a class="layui-btn layui-btn-primary  layui-btn-sm"
+                               ng-click="batchDeleteParams(currentLinkId)">清空</a>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block" style="margin-left: 0!important;">
+                            <table class="layui-table">
+                                <colgroup>
+                                    <col width="30">
+                                    <col>
+                                    <col width=175>
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>参数</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="params in linkParamsModel">
+                                    <td>{{params.id}}</td>
+                                    <td><input ng-class="params.id" type="text" ng-model="params.param"
+                                               class="layui-input"></td>
+                                    <td class="paramsOperation">
+                                        <a class="layui-btn layui-btn-sm"
+                                           ng-click="updateParam(params.linkId,params.id)">保存</a>
+                                        <a class="layui-btn layui-btn-sm layui-btn-warm"
+                                           ng-click="doPreParamCase(params.linkId,params.id)">测试</a>
+                                        <a class="layui-btn layui-btn-sm layui-btn-danger"
+                                           ng-click="deleteParam(params.linkId,params.id,'linkParamDelete')">删除</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="2">
+                                        <input type="text" ng-model="inputParamModel" class="layui-input">
+                                    </td>
+                                    <td class="paramsOperation">
+                                        <a class="layui-btn layui-btn-sm " ng-click="insertParam(currentLinkId)">保存</a>
+                                        <a class="layui-btn layui-btn-sm layui-btn-warm"
+                                           ng-click="doInputParamCase(currentLinkId)">测试</a>
+                                        <a class="layui-btn layui-btn-sm layui-btn-danger" ng-click="clearInputParam()">删除</a>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            <div class="layui-row" id="paramsModelPage"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="batchImportParamsDialog" style="display: none">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-carousel">
+                <blockquote class="layui-elem-quote">
+                    <div class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input ng-model="batchImportModel.template" placeholder="请填入模板,若无,则不填"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <div class="layui-input-block" style="margin-left: 0 !important;">
+                                <textarea ng-model="batchImportModel.inputData" placeholder="请导入内容"
+                                          class="layui-textarea" style="height: 445px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pullParamsDialog" style="display: none">
+    <blockquote class="layui-elem-quote layui-form" style="background-color: white;margin-top: 20px">
+        <div class="layui-row">
+            <legend>总共：{{linkParamsSize}}</legend>
+            <hr class="layui-bg-orange marginTopBottom15">
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-md2" style="margin-top: 10px">
+                <p>数量：</p>
+            </div>
+            <div class="layui-col-md10">
+                <input type="text" ng-model="inputPullParamsSizeModel" placeholder="参数数量" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+    </blockquote>
+</div>

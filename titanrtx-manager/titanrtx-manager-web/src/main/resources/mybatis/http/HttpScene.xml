@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.http.HttpSceneMapper">
+
+
+    <select id="selectAll" resultType="com.yunji.titanrtx.manager.dao.entity.http.HttpSceneEntity">
+      SELECT * FROM http_scene s  order by s.updateTime desc limit 200
+    </select>
+
+
+    <delete id="deleteById">
+        delete from http_scene where id = #{id}
+    </delete>
+
+
+    <insert id="insert">
+        insert into http_scene
+        (name,strategy,concurrent,total,timeout,throughPut,flow,idsScale,idsWeight,idsQps,sequence,allot,status,webhook,alertThreshold)
+        values
+        (#{name},#{strategy},#{concurrent},#{total},#{timeout},#{throughPut},#{flow},#{idsScale},#{idsWeight},#{idsQps},#{sequence},#{allot},#{status},#{webhook},#{alertThreshold})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.http.HttpSceneEntity">
+        SELECT * FROM http_scene s where s.id = #{id}
+    </select>
+
+    <select id="selectAllSceneStresses" resultType="com.yunji.titanrtx.manager.dao.entity.http.SceneStressEntity">
+        SELECT id,status FROM http_scene
+    </select>
+
+
+    <select id="findByName" resultType="com.yunji.titanrtx.manager.dao.entity.http.HttpSceneEntity">
+        SELECT * FROM http_scene s where s.name = #{name}
+    </select>
+
+    <select id="selectSceneIds" resultType="java.lang.Integer">
+        select s.id from http_scene s where s.name like CONCAT('%',#{key},'%')  order by s.updateTime desc
+    </select>
+
+
+    <select id="searchScenes" resultType="com.yunji.titanrtx.manager.dao.entity.http.HttpSceneEntity">
+        select * from http_scene s where s.name like CONCAT('%',#{key},'%') or s.idsWeight like CONCAT('%',#{key},'%')  order by s.updateTime desc
+    </select>
+
+
+    <update id="update">
+        update http_scene  s set
+                             s.name =#{name},
+                             s.strategy =#{strategy},
+                             s.concurrent = #{concurrent},
+                             s.total =#{total},
+                             s.timeout =#{timeout},
+                             s.throughPut =#{throughPut},
+                             s.flow =#{flow},
+                             s.idsScale =#{idsScale},
+                             s.idsWeight =#{idsWeight},
+                             s.idsQps =#{idsQps},
+                             s.sequence =#{sequence},
+                             s.allot =#{allot},
+                             s.webhook =#{webhook},
+                             s.alertThreshold=#{alertThreshold},
+                             s.updateTime = now()
+        where s.id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        update http_scene s set  s.status = #{status} , s.updateTime = now()
+        where s.id = #{id}
+    </update>
+
+
+    <update id="resetAll">
+        update http_scene s set  s.status = 0 , s.updateTime = now()
+        where s.status != 0
+    </update>
+
+    <select id="count" resultType="integer">
+        SELECT count(id) FROM http_scene
+    </select>
+
+</mapper>
+

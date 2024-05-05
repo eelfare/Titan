@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.dubbo.DubboReportMapper">
+
+
+    <insert id="insert">
+        insert into dubbo_report (sceneId,snap)
+        values (#{sceneId},#{snap})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <delete id="deleteById">
+        delete from dubbo_report where id = #{id}
+    </delete>
+
+    <select id="selectBySceneId" resultType="com.yunji.titanrtx.manager.dao.entity.dubbo.DubboReportEntity">
+        select * from dubbo_report r where r.sceneId = #{sceneId} order by r.updateTime desc
+    </select>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.dubbo.DubboReportEntity">
+        select * from dubbo_report where id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="com.yunji.titanrtx.manager.dao.entity.dubbo.DubboReportEntity">
+        select * from dubbo_report r order by r.updateTime desc limit 200
+    </select>
+
+
+    <select id="count" resultType="integer">
+        SELECT count(id) FROM dubbo_report
+    </select>
+
+
+    <select id="selectByIds" resultType="com.yunji.titanrtx.manager.dao.entity.dubbo.DubboReportEntity">
+        SELECT * FROM dubbo_report r where r.id in (
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+        order by r.createTime
+    </select>
+
+</mapper>
+

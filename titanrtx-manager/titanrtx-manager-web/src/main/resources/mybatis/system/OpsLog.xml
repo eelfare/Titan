@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.system.OpsLogMapper">
+
+
+
+    <insert id="insert">
+        insert into ops_log (userId,userName,pathName,params)
+        values (#{userId},#{userName},#{pathName},#{params})
+    </insert>
+
+
+    <delete id="deleteById">
+        delete from ops_log where id = #{id}
+    </delete>
+
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.system.OpsLogEntity">
+        select * from ops_log where id = #{id}
+    </select>
+
+
+    <select id="selectAll" resultType="com.yunji.titanrtx.manager.dao.entity.system.OpsLogEntity">
+        select * from ops_log o order by o.updateTime desc limit 200
+    </select>
+
+    <select id="selectByUserName" resultType="com.yunji.titanrtx.manager.dao.entity.system.OpsLogEntity">
+        select * from ops_log o where o.userName like CONCAT('%',#{key},'%') order by o.updateTime desc limit 200
+    </select>
+
+
+</mapper>
+

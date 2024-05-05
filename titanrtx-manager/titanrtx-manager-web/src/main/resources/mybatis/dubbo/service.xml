@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunji.titanrtx.manager.dao.mapper.dubbo.ServiceMapper">
+
+
+    <select id="selectAll" resultType="com.yunji.titanrtx.manager.dao.entity.dubbo.ServiceEntity">
+        SELECT ds.*,(SELECT COUNT(*) FROM service_params sp WHERE ds.id = sp.serviceId) AS paramNum FROM dubbo_service ds where ds.deleted = 0 order by ds.updateTime desc limit 200
+    </select>
+
+    <select id="selectAllOfParamStatus" resultType="com.yunji.titanrtx.manager.dao.entity.dubbo.ServiceEntity">
+        select id,paramStatus from dubbo_service
+    </select>
+
+
+    <insert id="insert">
+        insert into dubbo_service
+        (name,applicationName,service_name,methodName,paramsType,rpcContent,address,clusterAddress,paramMode)
+        values
+        (#{name},#{applicationName},#{serviceName},#{methodName},#{paramsType},#{rpcContent},#{address},#{clusterAddress},#{paramMode})
+        <selectKey resultType="Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findById" resultType="com.yunji.titanrtx.manager.dao.entity.dubbo.ServiceEntity">
+        SELECT ds.*,(SELECT COUNT(*) FROM service_params sp WHERE ds.id = sp.serviceId) AS paramNum FROM dubbo_service ds where ds.id = #{id}
+    </select>
+
+    <update id="update">
+        update dubbo_service ds set   ds.name =#{name},
+                                         ds.applicationName = #{applicationName},
+                                         ds.service_name =#{serviceName},
+                                         ds.methodName =#{methodName},
+                                         ds.paramsType =#{paramsType},
+                                         ds.rpcContent =#{rpcContent},
+                                         ds.address =#{address},
+                                         ds.clusterAddress =#{clusterAddress},
+                                         ds.paramMode = #{paramMode},
+                                         ds.updateTime = now()
+        where ds.id = #{id}
+    </update>
+
+
+    <select id="searchService" resultType="com.yunji.titanrtx.manager.dao.entity.dubbo.ServiceEntity">
+        select * from dubbo_service ds
+        where ds.name like CONCAT('%',#{key},'%')
+           or ds.applicationName like CONCAT('%',#{key},'%')
+           or ds.service_name like CONCAT('%',#{key},'%')
+           or ds.methodName like CONCAT('%',#{key},'%') order by ds.updateTime desc
+    </select>
+
+    <select id="selectByIds" resultType="com.yunji.titanrtx.manager.dao.entity.dubbo.ServiceEntity">
+        SELECT ds.*,(SELECT COUNT(*) FROM service_params sp WHERE ds.id = sp.serviceId) AS paramNum FROM dubbo_service
+        ds where ds.id in (
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </select>
+
+
+    <delete id="deleteById">
+        delete from dubbo_service where id = #{id}
+    </delete>
+
+
+    <update id="updateParamOrderStatus">
+         update dubbo_service li
+             set   li.paramStatus =#{status}
+         where li.id = #{id}
+    </update>
+
+
+</mapper>
+

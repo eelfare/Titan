@@ -1,0 +1,56 @@
+<div class="layui-row layui-col-space3 searchInputBackGroundWhite">
+    <div class="layui-col-md3">
+        <li class="layui-this customSearch">
+            <input type="text" ng-keyup="enterEvent($event,this)" class="layui-input"  ng-model="searchModel" placeholder=" 分组名" >
+        </li>
+    </div>
+
+    <div class="layui-col-md8">&nbsp;</div>
+
+    <div class="layui-col-md1">
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 0">
+                <a class="layui-btn layui-btn-primary searchButton" ng-href="#/blackGroupAddOrEdit">
+                    <i class="layui-icon layui-icon-add-circle"></i> 添加分组
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row">
+    <table class="layui-table tableCursor" lay-skin="line">
+        <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col width=60>
+            <col width="1">
+            <col width="1">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>组名</th>
+            <th>操作</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in showModel">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>
+                <a class="layui-btn layui-btn-xs" ng-click="goRoutePage('/blackGroupAddOrEdit',{'id':item.id})">编辑</a>
+            </td>
+            <td>
+                <a  class="layui-btn layui-btn-xs layui-btn-danger" ng-click="deleteGroup(item.id)">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="layui-row" id="indexModelPage"></div>
+</div>
+

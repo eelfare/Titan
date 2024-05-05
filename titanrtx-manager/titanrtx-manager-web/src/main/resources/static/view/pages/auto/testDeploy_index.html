@@ -1,0 +1,99 @@
+<div class="layui-row">
+    <table class="layui-table tableCursor" lay-skin="line">
+        <colgroup>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col width=60>
+            <col width="1">
+            <col width="1">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>名称</th>
+            <th>类型</th>
+            <th>调度时间</th>
+            <th>持续时间(分钟)</th>
+            <th>操作</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="deploy in showModel" ng-style="{'background':deploy.history?'#FBFBFB':''}" on-finish-render>
+            <td>{{deploy.id}}</td>
+            <td>{{deploy.name}}</td>
+            <td ng-if="deploy.batch">流量构造</td>
+            <td ng-if="deploy.commonStress">场景压测</td>
+            <td>{{deploy.grading == 'PRECISE'?(deploy.time|date:'yyyy-MM-dd HH:mm:ss'):
+                deploy.grading == 'EVERYDAY'?'每天的'+deploy.time+'执行':
+                deploy.grading == 'EVERYHOUR'?'每小时的'+deploy.time+'执行':'每分钟执行'}}
+            </td>
+            <td ng-if="deploy.batch">-</td>
+            <td ng-if="deploy.commonStress">{{deploy.continuousTime}}</td>
+
+            <td ng-if="deploy.history">
+                <a class="layui-btn layui-btn-xs layui-btn-disabled">编辑</a>
+            </td>
+            <td ng-if="!deploy.history">
+                <a class="layui-btn layui-btn-xs layui-btn-xs" ng-click="editAutoTest(deploy)">编辑</a>
+            </td>
+            <td>
+                <a class="layui-btn layui-btn-xs layui-btn-danger"
+                   ng-click="deleteDeploy(deploy.id, deploy.history)">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="layui-row" id="indexModelPage"></div>
+</div>
+
+<div id="editDeployDialog" style="display: none">
+    <blockquote class="layui-elem-quote layui-form" style="background-color: white;">
+        <legend>调度名：{{concurrentDeploy.name}}</legend>
+        <hr class="layui-bg-red marginTopBottom15">
+        <legend>执行时间：{{concurrentDeploy.grading == 'PRECISE'?(concurrentDeploy.time|date:'yyyy-MM-dd HH:mm:ss'):
+            concurrentDeploy.grading == 'EVERYDAY'?'每天的'+concurrentDeploy.time +'执行':
+            concurrentDeploy.grading == 'EVERYHOUR'?'每小时的'+concurrentDeploy.time +'执行':'每分钟执行'}}
+        </legend>
+        <hr class="layui-bg-blue marginTopBottom15">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="padding: 9px 0px">粒度选择：</label>
+                <div class="layui-input-inline">
+                    <select-plus list-model="gradingListModel" lay-filter="{{concurrentDeploy.name}}"
+                                 yj-model="selectedGrading" name="selectedGrading"></select-plus>
+                </div>
+            </div>
+            <div ng-if="selectedGrading.id == 'PRECISE'" class="layui-form-item" style="margin-top: 15px;">
+                <label class="layui-form-label" style="padding: 9px 0px">调度时间：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="executeTimePrecise" placeholder="yyyy-MM-dd HH:mm:ss">
+                </div>
+            </div>
+            <div ng-if="selectedGrading.id == 'EVERYDAY'" class="layui-form-item" style="margin-top: 15px;">
+                <label class="layui-form-label" style="padding: 9px 0px">调度时间：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="executeTimeEveryday" placeholder="HH点mm分">
+                </div>
+            </div>
+            <div ng-if="selectedGrading.id == 'EVERYHOUR'" class="layui-form-item" style="margin-top: 15px;">
+                <label class="layui-form-label" style="padding: 9px 0px">调度时间：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="executeTimeEveryHour" placeholder="mm分">
+                </div>
+            </div>
+            <div class="layui-form-item" ng-if="concurrentDeploy.commonStress" style="margin-top: 15px;">
+                <label class="layui-form-label" style="padding: 9px 0px">持续时间：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" ng-model="concurrentDeploy.continuousTime"
+                           id="continuousTime"
+                           placeholder="以分钟为单位，eg: 10">
+                </div>
+            </div>
+        </form>
+    </blockquote>
+</div>
+

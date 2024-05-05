@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.18.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.yunji</groupId>
+    <artifactId>titanrtx</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.version>0.0.1-SNAPSHOT</project.version>
+        <dubbotitanrtx.version>2.7.0</dubbotitanrtx.version>
+        <fastjson.version>1.2.54</fastjson.version>
+        <curator.version>2.13.0</curator.version>
+        <commons-io.version>2.6</commons-io.version>
+        <aliyun-java-sdk-core.version>3.2.6</aliyun-java-sdk-core.version>
+        <aliyun-java-sdk-cms.version>5.0.4</aliyun-java-sdk-cms.version>
+        <tencentcloud-sdk-java.version>3.0.75</tencentcloud-sdk-java.version>
+        <druid.version>1.1.10</druid.version>
+        <pagehelper.version>1.2.5</pagehelper.version>
+        <mybatis.version>1.3.1</mybatis.version>
+        <commons-lang3.version>3.7</commons-lang3.version>
+        <httpcore-nio.version>4.4.10</httpcore-nio.version>
+        <poi-tl.version>1.7.3</poi-tl.version>
+        <!--        <poi-tl.version>1.4.2</poi-tl.version>-->
+        <disruptor.version>3.4.2</disruptor.version>
+        <commons-exec.version>1.3</commons-exec.version>
+        <jackson-annotations.version>2.8.0</jackson-annotations.version>
+        <disruptor.version>3.4.2</disruptor.version>
+        <influxdb-java.version>2.15</influxdb-java.version>
+        <joda-time.version>2.10.1</joda-time.version>
+        <kafka-client.version>2.1.0</kafka-client.version>
+        <guava.version>27.1-jre</guava.version>
+        <esotericsoftware-kryo.version>4.0.2</esotericsoftware-kryo.version>
+        <kryo-serializers.version>0.45</kryo-serializers.version>
+        <org.async.http.client.version>2.10.4</org.async.http.client.version>
+    </properties>
+
+    <modules>
+        <module>titanrtx-manager</module>
+        <module>titanrtx-common</module>
+        <module>titanrtx-plugin</module>
+        <module>titanrtx-agent</module>
+        <module>titanrtx-commander</module>
+        <module>titanrtx-cia-agent</module>
+    </modules>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+    </dependencies>
+
+
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <name>yunji-releases</name>
+            <url>http://nexus.yunjiglobal.com/repository/yunji-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus</id>
+            <name>yunji-snapshots</name>
+            <url>http://nexus.yunjiglobal.com/repository/yunji-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

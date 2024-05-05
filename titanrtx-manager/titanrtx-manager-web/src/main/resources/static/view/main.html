@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>TITANX</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../vendor/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/main.css" media="all">
+    <script src="../vendor/angular/angular.js" charset="utf-8"></script>
+    <script src="../vendor/layui/layui.all.js" charset="utf-8"></script>
+</head>
+
+
+<body ng-app="app"  class="layui-layout-body" ng-controller="mainController">
+<div class="layui-layout-admin  layui-layout">
+    <div ng-include="'pages/header.html'"></div>
+    <div ng-include="'pages/side.html'"></div>
+
+    <div class="layui-body" style="top: 42px;">
+        <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab" >
+            <div class="layui-container">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-carousel">
+                            <section ng-view></section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-include="'pages/footer.html'"></div>
+</div>
+
+
+<div id="paramsCasRespDialog" style="display: none">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-carousel">
+                <blockquote class="layui-elem-quote">
+                    <pre  ng-bind-html="paramsCasRespMsg | to_trusted"></pre>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="describeParamsDialog" style="display: none">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-carousel">
+                <div class="layui-tab layui-tab-brief" lay-filter="describeParamsFilter">
+                    <ul class="layui-tab-title" style="text-align: center">
+                        <li lay-id="http">HTTP参数说明</li>
+                        <li lay-id="dubbo">DUBBO参数说明</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+
+                            <div> GET请求：</div>
+                            <div style='padding-left: 25px;'><pre class='layui-code'>fullcoudivonId=115&shodivId=123&adivdivCont=0</pre></div>
+
+                            <div>POST 表单请求,与GET方式一致,采用KEY-VALUE方式标识键值对:</div>
+                            <div style='padding-left: 25px;'><pre class='layui-code'>fullcoudivonId=115&shodivId=123&adivdivCont=0</pre></div>
+
+                            <div>POST JSON请求,直接将JSON内容作为请求参数，值得注意的是，CONTENT-TYPE需要选择与之相对应的:</div>
+                            <div style='padding-left: 25px;'><pre class='layui-code'>{"link":{"charset":"UTF-8","protocol":"http","method":"post","name":"本机提交接口","contentType":"application/json","url":"127.0.0.1:8080/link/add.do"}}</pre></div>
+
+                            <div> 如果需要添加请求头,使用3个%%%分割请求参数和请求头,而多个请求头则使用3个&&&符号分割</div>
+                            <div style='padding-left: 25px;'><pre class='layui-code'>fullcoudivonId=115%%%User-Agent=Mozilla/5.0...&&&Cookies==https://m.yunjiglobal.com/yunjibuyer/static/vue-buyer/idc/index.html#/sure-order...</pre></div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <img alt="dubbo参数说明" src="../images/dubbo.png">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="progressDialog" style="display: none">
+    <div class="layui-card">
+        <div class="layui-card-body layadmin-takerates" >
+            <div class="layui-carousel">
+                <div  class="layui-row">
+                    <div id="progressChart"  style=" width: 1070px; height: 550px;margin-left: 3px "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../vendor/angular/angular-route.min.js"></script>
+<script type="text/javascript" src="../vendor/angular/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="../vendor/echarts/echarts.min.js"></script>
+<script src="../js/u/helper.js"></script>
+<script type="text/javascript" src="../js/u/layuiAjax.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/ngInvoke.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/overview.js"></script>
+<script src="../js/http/link.js"></script>
+<script src="../js/http/scene.js"></script>
+<script src="../js/http/report.js"></script>
+<script src="../js/dubbo/service.js"></script>
+<script src="../js/dubbo/scene.js"></script>
+<script src="../js/dubbo/report.js"></script>
+<script src="../js/data/task.js"></script>
+<script src="../js/data/batch.js"></script>
+<script src="../js/auto/topLink.js"></script>
+<script src="../js/auto/autoTop.js"></script>
+<script src="../js/auto/testDeploy.js"></script>
+<script src="../js/auto/blackGroup.js"></script>
+<script src="../js/auto/whiteList.js"></script>
+<script src="../js/system/machine.js"></script>
+<script src="../js/system/opsLog.js"></script>
+<script src="../js/system/user.js"></script>
+<script src="../js/system/rulesLink.js"></script>
+</body>
+</html>
+

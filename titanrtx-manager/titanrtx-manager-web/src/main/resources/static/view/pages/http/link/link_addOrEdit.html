@@ -1,0 +1,190 @@
+<div class="layui-elem-quote">
+        链路管理 &gt;&gt;<label class="titan-head-label">{{isEdit? '编辑链路':'新增链路'}}</label>
+</div>
+
+<div class="layui-row conForm">
+    <div class="layui-col-md10 layui-form">
+        <blockquote class="layui-elem-quote ">
+            <div class="layui-form-item">
+                <label class="layui-form-label">链路名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" ng-model="linkInfoModel.name" name="name" lay-verify="required"  class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">压测路径：</label>
+                <div class="layui-input-block">
+                    <input  type="text" ng-model="linkInfoModel.url" name="url" lay-verify="required" class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">协议类型：</label>
+                <div class="layui-input-block">
+                    <select name="protocol" title="protocol">
+                        <option value="HTTP" ng-selected="linkInfoModel.protocol == 'HTTP'">HTTP</option>
+                        <option value="HTTPS" ng-selected="linkInfoModel.protocol == 'HTTPS'">HTTPS</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">请求类型：</label>
+                <div class="layui-input-block">
+                    <select name="method" title="method">
+                        <option value="GET" ng-selected="linkInfoModel.method == 'GET'">GET</option>
+                        <option value="POST" ng-selected="linkInfoModel.method == 'POST'">POST</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">内容类型：</label>
+                <div class="layui-input-block">
+                    <select name="contentType" title="contentType">
+                        <option value="JSON" ng-selected="linkInfoModel.contentType == 'JSON'">application/json</option>
+                        <option value="XML" ng-selected="linkInfoModel.contentType == 'XML'">application/xml</option>
+                        <option value="Text" ng-selected="linkInfoModel.contentType == 'Text'">text/xml</option>
+                        <option value="RAW" ng-selected="linkInfoModel.contentType == 'RAW'">raw</option>
+                        <option value="BINARY" ng-selected="linkInfoModel.contentType == 'BINARY'">binary</option>
+                        <option value="JAVASCRIPT" ng-selected="linkInfoModel.contentType == 'JAVASCRIPT'">application/javascript</option>
+                        <option value="HTML" ng-selected="linkInfoModel.contentType == 'HTML'">text/html</option>
+                        <option value="XWWWFORMURLENCODED" ng-selected="linkInfoModel.contentType == 'XWWWFORMURLENCODED'">application/x-www-form-urlencoded</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">字符编码：</label>
+                <div class="layui-input-block">
+                    <select name="charset" title="charset">
+                        <option value="UTF8" ng-selected="linkInfoModel.charset == 'UTF8'">UTF-8</option>
+                        <option value="ISO88591" ng-selected="linkInfoModel.charset == 'ISO88591'">ISO-8859-1</option>
+                        <option value="USASCII" ng-selected="linkInfoModel.charset == 'USASCII'">US-ASCII</option>
+                        <option value="UTF16" ng-selected="linkInfoModel.charset == 'UTF16'">UTF-16</option>
+                        <option value="UTF16LE" ng-selected="linkInfoModel.charset == 'UTF16LE'">UTF-16LE</option>
+                        <option value="UTF16BE" ng-selected="linkInfoModel.charset == 'UTF16BE'">UTF-16BE</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">参数使用：</label>
+                <div class="layui-input-block">
+                    <select name="paramMode" title="paramMode">
+                        <option value="RANDOM" ng-selected="linkInfoModel.paramMode == 'RANDOM'">可重复</option>
+                        <option value="ORDER" ng-selected="linkInfoModel.paramMode == 'ORDER'">一次性</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" >
+                    <input type="text" ng-model="linkInfoModel.id"  name="id" autocomplete="off" class="layui-input layui-hide" title="input"/>
+                </div>
+            </div>
+        </blockquote>
+
+        <hr class="layui-bg-green">
+
+        <blockquote class="layui-elem-quote ">
+            <div class="layui-form-item layui-row layui-col-space10" style="margin-bottom: 0 !important;margin-top: 10px">
+                <div class="layui-col-md4">
+                    <label class="layui-form-label speParams" ng-click="describeParamsDialog('http')">参数说明：</label>
+                </div>
+                <div class="layui-col-md8" style="text-align: right">
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" ng-click="pullHttParams()">获取</button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" ng-click="batchImportParams()">批导</button>
+                    <a class="layui-btn layui-btn-primary layui-btn-sm" ng-click="batchDoParamCase()">批测</a>
+                    <a class="layui-btn layui-btn-primary  layui-btn-sm" ng-click="batchDeleteParams(linkInfoModel.id)">清空</a>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-left: 0!important;">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="30">
+                            <col>
+                            <col width=175>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>参数</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="params in linkParamsModel">
+                            <td>{{params.id}}</td>
+                            <td><input ng-class="params.id"  type="text"  ng-model="params.param" class="layui-input"></td>
+                            <td class="paramsOperation">
+                                <a  class="layui-btn layui-btn-sm" ng-click="updateHttpParam(params.id)">保存</a>
+                                <a  class="layui-btn layui-btn-sm layui-btn-warm" ng-click="doPreParamCase(params.id)">测试</a>
+                                <a  class="layui-btn layui-btn-sm layui-btn-danger" ng-click="deleteParam(params.id)">删除</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="2" >
+                                <input type="text"  ng-model="inputParamModel"  class="layui-input" >
+                            </td>
+                            <td class="paramsOperation">
+                                <a  class="layui-btn layui-btn-sm " ng-click="insertLinkParam()">保存</a>
+                                <a  class="layui-btn layui-btn-sm layui-btn-warm" ng-click="doInputParamCase()">测试</a>
+                                <a  class="layui-btn layui-btn-sm layui-btn-danger" ng-click="clearInputParam()">删除</a>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    <div class="layui-row" id="paramsModelPage"></div>
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="text-align: right">
+                <a class="layui-btn titan-btn layui-btn-normal layui-btn-sm" id="linkSubmit" lay-submit lay-filter="linkSubmit">保存</a>
+                <a class="layui-btn layui-btn-primary layui-btn-sm" ng-click = "goRoutePage('/link',{})">取消</a>
+            </div>
+        </blockquote>
+    </div>
+</div>
+
+
+
+<div id="batchImportParamsDialog" style="display: none">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-carousel">
+                <blockquote class="layui-elem-quote">
+                    <div class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input  ng-model="batchImportModel.template" placeholder="请填入模板,若无,则不填" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <div class="layui-input-block" style="margin-left: 0 !important;">
+                                <textarea ng-model="batchImportModel.inputData" placeholder="请导入内容" class="layui-textarea" style="height: 445px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="pullParamsDialog" style="display: none">
+    <blockquote class="layui-elem-quote layui-form" style="background-color: white;margin-top: 20px">
+        <div class="layui-row">
+            <legend>总共：{{linkParamsSize}}</legend>
+            <hr class="layui-bg-orange marginTopBottom15">
+        </div>
+
+        <div class="layui-row">
+            <div class="layui-col-md2" style="margin-top: 10px" >
+                <p>数量：</p>
+            </div>
+            <div class="layui-col-md10">
+                <input type="text" ng-model="inputPullParamsSizeModel" placeholder="参数数量" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </blockquote>
+</div>
